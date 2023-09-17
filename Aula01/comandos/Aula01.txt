@@ -1,0 +1,105 @@
+Instalação das ferramentas básicas do Azure Functions
+https://learn.microsoft.com/pt-br/azure/azure-functions/create-first-function-cli-csharp?tabs=windows%2Cazure-cli#install-the-azure-functions-core-tools
+
+
+
+# Certifique-se de ter instalado Azure Functions Core Tools!
+# https://go.microsoft.com/fwlink/?linkid=2174087
+# IMPORTANTE: reinicie o terminal após instalar o Azure Functions Core Tools!
+
+# Navegue até a pasta Aula01\depois:
+
+cd Aula01\depois
+
+# Execute o comando func init para criar o projeto de funções MarceloLojinhaApp em uma pasta chamada MarceloLojinhaApp com o runtime especificado:
+func init MarceloLojinhaApp --worker-runtime dotnet-isolated --target-framework net7.0
+
+# Navegue até a pasta do projeto MarceloLojinhaApp:
+cd MarceloLojinhaApp
+
+# Essa pasta contém vários arquivos do projeto, incluindo arquivos de configuração chamados local.settings.json e host.json. Como local.settings.json pode conter segredos baixados do Azure, o arquivo é excluído do controle do código-fonte por padrão no arquivo .gitignore.
+
+# Adicione uma função ao projeto usando o comando a seguir, em que o argumento --name é o nome exclusivo da função (HttpExample) e o argumento --template especifica o gatilho da função (HTTP).
+
+func new --name HttpExample --template "HTTP trigger" --authlevel "anonymous"
+
+# func new cria um arquivo de código HttpExample.cs.
+
+# Execute sua função iniciando o host de runtime do Azure Functions local da pasta MarceloLojinhaApp:
+
+func start
+
+# Perto do fim da saída, devem aparecer as seguintes linhas:
+
+# ...
+# 
+# Now listening on: http://0.0.0.0:7071
+# Application started. Press Ctrl+C to shut down.
+# 
+# Http Functions:
+# 
+#         HttpExample: [GET,POST] http://localhost:7071/api/HttpExample
+# ...
+
+# Copie a URL da função HttpExample dessa saída (http://localhost:7071/api/HttpExample) para um navegador e navegue até a URL da função e você deverá receber uma mensagem Bem-vindo ao Azure Functions.
+
+# Use os comandos a seguir para criar esses itens. Tanto a CLI do Azure quanto o PowerShell são compatíveis.
+# Se você ainda não tiver feito isso, entre no Azure:
+
+az login
+
+# Crie um grupo de recursos chamado curso-azure-functions na região de sua escolha:
+
+# az group create --resource-group curso-azure-functions --location <SUA-REGIAO>
+az group create --resource-group curso-azure-functions --location eastus
+
+# Crie uma conta de armazenamento para uso geral no grupo de recursos e na região:
+
+# No exemplo abaixo, substitua <STORAGE_NAME> por um nome que seja apropriado para você e exclusivo no Armazenamento do Azure. Os nomes devem conter de 3 a 24 caracteres e podem conter somente números e letras minúsculas. Standard_LRS especifica uma conta de uso geral, que é compatível com o Functions.
+
+# az storage account create --name <STORAGE_NAME> --location <REGION> --resource-group curso-azure-functions --sku Standard_LRS --allow-blob-public-access false
+az storage account create --name marcelostorage --location eastus --resource-group curso-azure-functions --sku Standard_LRS --allow-blob-public-access false
+
+# O comando az storage account create cria a conta de armazenamento.
+
+# A conta de armazenamento é usada para armazenar dados importantes do aplicativo, às vezes incluindo o próprio código do aplicativo. Você deve limitar o acesso de outros aplicativos e usuários à conta de armazenamento.
+
+# Criar o aplicativo de funções no Azure:
+
+# az functionapp create --resource-group curso-azure-functions --consumption-plan-location <REGION> --runtime dotnet-isolated --functions-version 4 --name MarceloLojinhaApp --storage-account <STORAGE_NAME>
+
+az functionapp create --resource-group curso-azure-functions --consumption-plan-location eastus --runtime dotnet-isolated --functions-version 4 --name MarceloLojinhaApp --storage-account marcelostorage
+
+# Implantar o projeto de funções no Azure
+# Depois de criar com sucesso o aplicativo de funções no Azure, você estará pronto para implantar um projeto local de funções usando o comando func azure functionapp publish.
+
+# func azure functionapp publish <APP_NAME>
+func azure functionapp publish MarceloLojinhaApp
+
+# O comando de publicação mostra resultados semelhantes à seguinte saída (truncado para fins de simplicidade):
+
+#Upload completed successfully.
+#Deployment completed successfully.
+#Functions in MarceloLojinhaApp:
+#    HttpExample - [httpTrigger]
+#        Invoke url: https://MarceloLojinhaApp.azurewebsites.net/api/httpexample
+
+# Invocar a função no Azure
+
+# Como a função usa um gatilho HTTP e dá suporte a solicitações GET, você a invoca fazendo uma solicitação HTTP para sua URL. É mais fácil fazer isso em um navegador.
+
+# Copie a URL de Invocação completa mostrada na saída do comando de publicação na barra de endereços de um navegador. Quando você navega para essa URL, o navegador deve exibir uma saída semelhante à de quando você executou a função localmente.
+
+# Execute o seguinte comando para ver os logs de streaming quase em tempo real:
+
+# func azure functionapp logstream <APP_NAME>
+func azure functionapp logstream MarceloLojinhaApp
+
+# OBS.: NÃO FUNCIONOU!
+
+#Limpar recursos
+# Se você prosseguir para a próxima etapa e adicionar uma associação de saída da fila do Armazenamento do Azure, mantenha todos os recursos, pois você se baseará no que já fez.
+
+# Caso contrário, use o comando a seguir para excluir o grupo de recursos e todos os recursos contidos nele para evitar custos adicionais.
+
+az group delete --name curso-azure-functions
