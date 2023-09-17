@@ -52,6 +52,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lojinha.NET", "Aula01\antes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lojinha.NET", "Aula01\depois\Lojinha.NET\Lojinha.NET.csproj", "{4E07DB95-46DC-4956-8CF4-ED17491BBBC4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarceloLojinhaApp", "Aula01\depois\MarceloLojinhaApp\MarceloLojinhaApp.csproj", "{EE288CDE-AB60-4326-BB27-5AFBB361D760}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{4E07DB95-46DC-4956-8CF4-ED17491BBBC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E07DB95-46DC-4956-8CF4-ED17491BBBC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E07DB95-46DC-4956-8CF4-ED17491BBBC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE288CDE-AB60-4326-BB27-5AFBB361D760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE288CDE-AB60-4326-BB27-5AFBB361D760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE288CDE-AB60-4326-BB27-5AFBB361D760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE288CDE-AB60-4326-BB27-5AFBB361D760}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +94,7 @@ Global
 		{4FF284E9-78D1-4173-BAB8-4E44FA120D60} = {63F2FB40-B37A-4A98-82C4-D87A78C55528}
 		{988DCC3C-53D6-4A34-A407-E6D950F9126D} = {7B438652-696E-4411-8F39-F66D79C2EAA5}
 		{4E07DB95-46DC-4956-8CF4-ED17491BBBC4} = {98116C8B-9E1F-4F4A-872E-D4C23A5D5973}
+		{EE288CDE-AB60-4326-BB27-5AFBB361D760} = {98116C8B-9E1F-4F4A-872E-D4C23A5D5973}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA6FDA2C-0BE9-4E61-9905-5D5E3F6CD68F}
