@@ -28,7 +28,7 @@ public class IndexModel : PageModel
         using HttpResponseMessage response = await httpClient.GetAsync("api/carrinho");
 
         var jsonResponse = await response.Content.ReadAsStringAsync();
-        CartItems = JsonConvert.DeserializeObject<List<CartItem>>(jsonResponse);
+        CartItems = JsonConvert.DeserializeObject<List<CartItem>>(jsonResponse)!;
     }
 
     public IActionResult OnPost()
