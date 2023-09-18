@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "antes", "antes", "{7B438652
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "comandos", "comandos", "{144AAFCE-D2C8-4383-ABD9-1517EF73F7F5}"
 	ProjectSection(SolutionItems) = preProject
+		PreparandoAmbiente1.1.ps1 = PreparandoAmbiente1.1.ps1
 		Aula01\comandos\Video1.2.ps1 = Aula01\comandos\Video1.2.ps1
 		Aula01\comandos\Video1.2.txt = Aula01\comandos\Video1.2.txt
 		Aula01\comandos\Video1.3.ps1 = Aula01\comandos\Video1.3.ps1
