@@ -1,3 +1,8 @@
+# Criar as variáveis de ambiente no Windows:
+# CosmosDB_URI
+# CosmosDB_KEY
+# CosmosDB_CONNECTIONSTRING
+
 Write-Output "Criando Azure Function LOCAL para consulta de carrinho..."
 Set-Location C:\Users\Nitro5\Documents\GitHub\curso-3393-planodeaula\Aula01\depois
 Set-Location MarceloLojinhaApp

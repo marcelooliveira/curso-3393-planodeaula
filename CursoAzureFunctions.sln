@@ -55,6 +55,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lojinha.NET", "Aula01\depoi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarceloLojinhaApp", "Aula01\depois\MarceloLojinhaApp\MarceloLojinhaApp.csproj", "{EE288CDE-AB60-4326-BB27-5AFBB361D760}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organico.Vida", "Aula01\antes\Organico.Vida\Organico.Vida.csproj", "{0874BD0E-5E04-41E2-A062-F8D12EC39F0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{EE288CDE-AB60-4326-BB27-5AFBB361D760}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE288CDE-AB60-4326-BB27-5AFBB361D760}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE288CDE-AB60-4326-BB27-5AFBB361D760}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0874BD0E-5E04-41E2-A062-F8D12EC39F0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0874BD0E-5E04-41E2-A062-F8D12EC39F0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0874BD0E-5E04-41E2-A062-F8D12EC39F0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0874BD0E-5E04-41E2-A062-F8D12EC39F0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,6 +102,7 @@ Global
 		{988DCC3C-53D6-4A34-A407-E6D950F9126D} = {7B438652-696E-4411-8F39-F66D79C2EAA5}
 		{4E07DB95-46DC-4956-8CF4-ED17491BBBC4} = {98116C8B-9E1F-4F4A-872E-D4C23A5D5973}
 		{EE288CDE-AB60-4326-BB27-5AFBB361D760} = {98116C8B-9E1F-4F4A-872E-D4C23A5D5973}
+		{0874BD0E-5E04-41E2-A062-F8D12EC39F0B} = {7B438652-696E-4411-8F39-F66D79C2EAA5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA6FDA2C-0BE9-4E61-9905-5D5E3F6CD68F}
