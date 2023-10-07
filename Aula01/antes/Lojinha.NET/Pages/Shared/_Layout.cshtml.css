@@ -46,3 +46,19 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+
+.creative-ops {
+    display: none;
+}
+
+@media only screen and (min-width: 1440px) {
+    .lg {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 560px) {
+    .sm {
+        display: block;
+    }
+}

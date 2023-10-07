@@ -47,6 +47,6 @@ public class AddToCartModel : PageModel
             0, 
             int.Parse(Request.Form["Quantity"].ToString())
         ));
-        return Redirect("/");
+        return Redirect("/cart");
     }
 }
