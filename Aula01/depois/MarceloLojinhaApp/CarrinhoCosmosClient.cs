@@ -12,7 +12,7 @@ namespace MarceloLojinhaApp
             Database database = await client.CreateDatabaseIfNotExistsAsync("lojinha");
             Container container = await database.CreateContainerIfNotExistsAsync(
                 "Carrinho",
-                "/myPartitionKey",
+                "/id",
                 400);
 
             Cart? result = null;

@@ -5,7 +5,7 @@
 
 Write-Output "Criando Azure Function LOCAL para consulta de carrinho..."
 Set-Location C:\Users\Nitro5\Documents\GitHub\curso-3393-planodeaula\Aula01\depois
-Set-Location MarceloLojinhaApp
+Set-Location Oct12OrganicoApp
 func new --name Carrinho --template "HTTP trigger" --authlevel "anonymous"
 
 # Write-Output "Fazendo login no Azure... (verifique o navegador)"
@@ -13,4 +13,4 @@ func new --name Carrinho --template "HTTP trigger" --authlevel "anonymous"
 # Start-Sleep -Seconds 5
 
 Write-Output "Publicando Function App local na nuvem..."
-func azure functionapp publish MarceloLojinhaApp
+func azure functionapp publish Oct12OrganicoApp

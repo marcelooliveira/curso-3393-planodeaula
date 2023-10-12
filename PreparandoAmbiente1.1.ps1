@@ -1,8 +1,8 @@
-﻿az cosmosdb create -n marcelo-account -g curso-azure-functions --default-consistency-level Session --locations regionName='eastus'
+﻿az cosmosdb create -n oct12-account -g curso-azure-functions --default-consistency-level Session --locations regionName='eastus'
 
-az cosmosdb sql database create -a marcelo-account -g curso-azure-functions -n lojinha
+az cosmosdb sql database create -a oct12-account -g curso-azure-functions -n organico
 
-az cosmosdb sql container create -a marcelo-account -g curso-azure-functions -d lojinha -n Carrinho -p "/myPartitionKey"
+az cosmosdb sql container create -a oct12-account -g curso-azure-functions -d organico -n Carrinho -p "/id"
 
 # inserir 1 item no container Carrinho:
 

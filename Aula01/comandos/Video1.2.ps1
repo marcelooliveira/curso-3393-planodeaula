@@ -1,18 +1,18 @@
 az login
 
 
-Write-Output "removendo MarceloLojinhaApp"
+Write-Output "removendo Oct12OrganicoApp"
 Set-Location C:\Users\Nitro5\Documents\GitHub\curso-3393-planodeaula\Aula01\depois
-$AppFolder = "MarceloLojinhaApp"
+$AppFolder = "Oct12OrganicoApp"
 if (Test-Path $AppFolder) {
   Remove-Item $AppFolder -Force -Recurse -Confirm:$false
 }
 
 Write-Output "Criando Function App LOCAL..."
-func init MarceloLojinhaApp --worker-runtime dotnet-isolated --target-framework net7.0
+func init Oct12OrganicoApp --worker-runtime dotnet-isolated --target-framework net7.0
 
 Write-Output "Criando Azure Function LOCAL com HTTP trigger..."
-Set-Location MarceloLojinhaApp
+Set-Location Oct12OrganicoApp
 func new --name HttpExample --template "HTTP trigger" --authlevel "anonymous"
 
 Write-Output "Modificando texto de boas-vindas..."
@@ -36,10 +36,10 @@ az storage account create --name marcelostorage --location eastus --resource-gro
 Start-Sleep -Seconds 10
 
 Write-Output "Criando Function App na nuvem..."
-az functionapp create --resource-group curso-azure-functions --consumption-plan-location eastus --runtime dotnet-isolated --functions-version 4 --name MarceloLojinhaApp --storage-account marcelostorage
+az functionapp create --resource-group curso-azure-functions --consumption-plan-location eastus --runtime dotnet-isolated --functions-version 4 --name Oct12OrganicoApp --storage-account marcelostorage
 Start-Sleep -Seconds 20
 
 Write-Output "Publicando Function App local na nuvem..."
-func azure functionapp publish MarceloLojinhaApp
-# func azure functionapp logstream MarceloLojinhaApp
+func azure functionapp publish Oct12OrganicoApp
+# func azure functionapp logstream Oct12OrganicoApp
 # az group delete --name curso-azure-functions

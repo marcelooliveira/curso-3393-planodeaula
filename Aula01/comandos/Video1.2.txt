@@ -1,3 +1,5 @@
+crie um grupo de recursos chamado curso-azure-functions
+
 Instalação das ferramentas básicas do Azure Functions
 https://learn.microsoft.com/pt-br/azure/azure-functions/create-first-function-cli-csharp?tabs=windows%2Cazure-cli#install-the-azure-functions-core-tools
 
@@ -11,11 +13,11 @@ https://learn.microsoft.com/pt-br/azure/azure-functions/create-first-function-cl
 
 cd Aula01\depois
 
-# Execute o comando func init para criar o projeto de funções MarceloLojinhaApp em uma pasta chamada MarceloLojinhaApp com o runtime especificado:
-func init MarceloLojinhaApp --worker-runtime dotnet-isolated --target-framework net7.0
+# Execute o comando func init para criar o projeto de funções Oct12OrganicoApp em uma pasta chamada Oct12OrganicoApp com o runtime especificado:
+func init Oct12OrganicoApp --worker-runtime dotnet-isolated --target-framework net7.0
 
-# Navegue até a pasta do projeto MarceloLojinhaApp:
-cd MarceloLojinhaApp
+# Navegue até a pasta do projeto Oct12OrganicoApp:
+cd Oct12OrganicoApp
 
 # Essa pasta contém vários arquivos do projeto, incluindo arquivos de configuração chamados local.settings.json e host.json. Como local.settings.json pode conter segredos baixados do Azure, o arquivo é excluído do controle do código-fonte por padrão no arquivo .gitignore.
 
@@ -25,7 +27,7 @@ func new --name HttpExample --template "HTTP trigger" --authlevel "anonymous"
 
 # func new cria um arquivo de código HttpExample.cs.
 
-# Execute sua função iniciando o host de runtime do Azure Functions local da pasta MarceloLojinhaApp:
+# Execute sua função iniciando o host de runtime do Azure Functions local da pasta Oct12OrganicoApp:
 
 func start
 
@@ -66,23 +68,23 @@ az storage account create --name marcelostorage --location eastus --resource-gro
 
 # Criar o aplicativo de funções no Azure:
 
-# az functionapp create --resource-group curso-azure-functions --consumption-plan-location <REGION> --runtime dotnet-isolated --functions-version 4 --name MarceloLojinhaApp --storage-account <STORAGE_NAME>
+# az functionapp create --resource-group curso-azure-functions --consumption-plan-location <REGION> --runtime dotnet-isolated --functions-version 4 --name Oct12OrganicoApp --storage-account <STORAGE_NAME>
 
-az functionapp create --resource-group curso-azure-functions --consumption-plan-location eastus --runtime dotnet-isolated --functions-version 4 --name MarceloLojinhaApp --storage-account marcelostorage
+az functionapp create --resource-group curso-azure-functions --consumption-plan-location eastus --runtime dotnet-isolated --functions-version 4 --name Oct12OrganicoApp --storage-account marcelostorage
 
 # Implantar o projeto de funções no Azure
 # Depois de criar com sucesso o aplicativo de funções no Azure, você estará pronto para implantar um projeto local de funções usando o comando func azure functionapp publish.
 
 # func azure functionapp publish <APP_NAME>
-func azure functionapp publish MarceloLojinhaApp
+func azure functionapp publish Oct12OrganicoApp
 
 # O comando de publicação mostra resultados semelhantes à seguinte saída (truncado para fins de simplicidade):
 
 #Upload completed successfully.
 #Deployment completed successfully.
-#Functions in MarceloLojinhaApp:
+#Functions in Oct12OrganicoApp:
 #    HttpExample - [httpTrigger]
-#        Invoke url: https://MarceloLojinhaApp.azurewebsites.net/api/httpexample
+#        Invoke url: https://Oct12OrganicoApp.azurewebsites.net/api/httpexample
 
 # Invocar a função no Azure
 
@@ -93,7 +95,7 @@ func azure functionapp publish MarceloLojinhaApp
 # Execute o seguinte comando para ver os logs de streaming quase em tempo real:
 
 # func azure functionapp logstream <APP_NAME>
-func azure functionapp logstream MarceloLojinhaApp
+func azure functionapp logstream Oct12OrganicoApp
 
 # OBS.: NÃO FUNCIONOU!
 
