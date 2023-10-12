@@ -1,4 +1,4 @@
-﻿namespace Organico.Model
+﻿namespace Organico.Library.Model
 {
     // Base class for all entities
     public abstract class BaseEntity

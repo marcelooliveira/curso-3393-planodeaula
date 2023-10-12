@@ -1,4 +1,4 @@
-﻿namespace Organico.Model
+﻿namespace Organico.Library.Model
 {
 
     // Represents a product

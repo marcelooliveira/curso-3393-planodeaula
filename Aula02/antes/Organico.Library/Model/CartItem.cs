@@ -1,4 +1,4 @@
-﻿namespace Organico.Model
+﻿namespace Organico.Library.Model
 {
     // Represents a group of a specific product in the cart
     public class CartItem : BaseEntity

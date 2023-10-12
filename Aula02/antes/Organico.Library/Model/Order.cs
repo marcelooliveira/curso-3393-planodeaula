@@ -1,4 +1,4 @@
-﻿namespace Organico.Model
+﻿namespace Organico.Library.Model
 {
     // Representa um pedido
     public class Order : BaseEntity

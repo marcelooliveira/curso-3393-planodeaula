@@ -1,5 +1,5 @@
 ﻿using Microsoft.Azure.Cosmos;
-using Organico.Model;
+using Organico.Library.Model;
 
 namespace MarceloLojinhaApp
 {
