@@ -2,7 +2,7 @@ using Organico.Library.Model;
 using System;
 using System.Collections.Generic;
 
-namespace Organico
+namespace Organico.Library.Data
 {
     // Represents the e-commerce base class with sample product list
     public class BaseECommerceData

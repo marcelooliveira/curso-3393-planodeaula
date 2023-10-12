@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Organico
+namespace Organico.Library.Data
 {
     // Wrapper for Hazelcast Client data operations
     public class ECommerceData : BaseECommerceData
