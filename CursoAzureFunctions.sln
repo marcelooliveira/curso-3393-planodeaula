@@ -61,6 +61,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarceloLojinhaApp", "Aula01
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Organico.Vida.Model", "Aula01\depois\Organico.Vida.Model\Organico.Vida.Model.csproj", "{993C08CD-050A-4014-A6E9-83D4A8FF3B83}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organico.Vida.Model", "Aula01\antes\Organico.Vida.Model\Organico.Vida.Model.csproj", "{82DCD181-EE52-4344-A851-66E16BB2DBDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{993C08CD-050A-4014-A6E9-83D4A8FF3B83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{993C08CD-050A-4014-A6E9-83D4A8FF3B83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{993C08CD-050A-4014-A6E9-83D4A8FF3B83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82DCD181-EE52-4344-A851-66E16BB2DBDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82DCD181-EE52-4344-A851-66E16BB2DBDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82DCD181-EE52-4344-A851-66E16BB2DBDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82DCD181-EE52-4344-A851-66E16BB2DBDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,6 +123,7 @@ Global
 		{797E5211-C139-4C7A-BE3F-DFDF75998CB6} = {98116C8B-9E1F-4F4A-872E-D4C23A5D5973}
 		{A6291945-6A5F-416D-9FBB-CE997ECE4AAE} = {98116C8B-9E1F-4F4A-872E-D4C23A5D5973}
 		{993C08CD-050A-4014-A6E9-83D4A8FF3B83} = {98116C8B-9E1F-4F4A-872E-D4C23A5D5973}
+		{82DCD181-EE52-4344-A851-66E16BB2DBDA} = {7B438652-696E-4411-8F39-F66D79C2EAA5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA6FDA2C-0BE9-4E61-9905-5D5E3F6CD68F}

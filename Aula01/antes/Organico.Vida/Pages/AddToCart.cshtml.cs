@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using Organico.Vida.Model;
 
 namespace Organico.Vida.Pages;
 
@@ -33,7 +34,8 @@ public class AddToCartModel : PageModel
         var product = products.FirstOrDefault(p => p.Id == productId);
 
         var newCartItem = new CartItem(itemId, product.Id, product.Icon, product.Description, product.UnitPrice, quantity);
-        return new JsonResult(newCartItem);
+        var json = new JsonResult(newCartItem);
+        return json;
     }
 
     public IActionResult OnPost()
