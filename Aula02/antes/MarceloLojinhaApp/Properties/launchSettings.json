@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Oct12OrganicoApp": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7050",
+      "launchBrowser": false
+    }
+  }
+}
