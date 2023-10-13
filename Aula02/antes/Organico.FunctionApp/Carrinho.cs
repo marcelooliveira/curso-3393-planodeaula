@@ -28,7 +28,8 @@ namespace Organico.FunctionApp
                 response = req.CreateResponse(HttpStatusCode.OK);
                 response.Headers.Add("Content-Type", "application/json; charset=utf-8");
 
-                var cart = await CarrinhoCosmosClient.GetCarrinho();
+                var cosmosClient = await CarrinhoCosmosClient.CreateAsync();
+                var cart = await cosmosClient.GetCarrinho();
 
                 if (cart != null)
                 {
