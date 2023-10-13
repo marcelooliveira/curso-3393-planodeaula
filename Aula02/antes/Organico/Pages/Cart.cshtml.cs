@@ -8,25 +8,22 @@ namespace Organico.Pages;
 
 public class CartModel : PageModel
 {
-    private readonly ILogger<CartModel> _logger;
+    private readonly IConfiguration _configuration;
 
-    // HttpClient lifecycle management best practices:
-    // https://learn.microsoft.com/dotnet/fundamentals/networking/http/httpclient-guidelines#recommended-use
-    private static HttpClient httpClient = new()
-    {
-        BaseAddress = new Uri("https://organicofunctionapp20231013101522.azurewebsites.net"),
-    };
+    private static HttpClient httpClient = new();
 
     public List<CartItem> CartItems { get; set; }
 
-    public CartModel(ILogger<CartModel> logger)
+    public CartModel(ILogger<CartModel> logger, IConfiguration configuration)
     {
         _logger = logger;
+        _configuration = configuration;
     }
 
     public async Task OnGet()
     {
-        using HttpResponseMessage response = await httpClient.GetAsync("api/carrinho");
+        Uri carrinhoUri = new Uri(new Uri($"{_configuration["FunctionAppUrl"]}"), "/api/carrinho");
+        using HttpResponseMessage response = await httpClient.GetAsync(carrinhoUri);
 
         var jsonResponse = await response.Content.ReadAsStringAsync();
         CartItems = JsonConvert.DeserializeObject<List<CartItem>>(jsonResponse)!;
