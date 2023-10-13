@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Organico.Library.Model;
 
-namespace MarceloLojinhaApp
+namespace Organico.Library
 {
     public class CarrinhoCosmosClient
     {
@@ -9,7 +9,7 @@ namespace MarceloLojinhaApp
         public static async Task<Cart?> GetCarrinho()
         {
             CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable("CosmosDB_URI"), Environment.GetEnvironmentVariable("CosmosDB_KEY"));
-            Database database = await client.CreateDatabaseIfNotExistsAsync("lojinha");
+            Database database = await client.CreateDatabaseIfNotExistsAsync("organico");
             Container container = await database.CreateContainerIfNotExistsAsync(
                 "Carrinho",
                 "/id",

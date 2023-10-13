@@ -9,7 +9,7 @@ namespace Organico.Library.Vida
         public static async Task<Cart?> GetCarrinho()
         {
             CosmosClient client = new CosmosClient(Environment.GetEnvironmentVariable("CosmosDB_URI"), Environment.GetEnvironmentVariable("CosmosDB_KEY"));
-            Database database = await client.CreateDatabaseIfNotExistsAsync("lojinha");
+            Database database = await client.CreateDatabaseIfNotExistsAsync("organico");
             Container container = await database.CreateContainerIfNotExistsAsync(
                 "Carrinho",
                 "/id",

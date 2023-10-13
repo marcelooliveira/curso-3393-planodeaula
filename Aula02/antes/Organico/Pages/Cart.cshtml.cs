@@ -14,7 +14,7 @@ public class CartModel : PageModel
     // https://learn.microsoft.com/dotnet/fundamentals/networking/http/httpclient-guidelines#recommended-use
     private static HttpClient httpClient = new()
     {
-        BaseAddress = new Uri("https://oct12organicoapp.azurewebsites.net"),
+        BaseAddress = new Uri("https://organicofunctionapp20231013101522.azurewebsites.net"),
     };
 
     public List<CartItem> CartItems { get; set; }
