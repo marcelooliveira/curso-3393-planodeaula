@@ -8,6 +8,7 @@ namespace Organico.Pages;
 
 public class CartModel : PageModel
 {
+    private ILogger<CartModel> _logger;
     private readonly IConfiguration _configuration;
 
     private static HttpClient httpClient = new();

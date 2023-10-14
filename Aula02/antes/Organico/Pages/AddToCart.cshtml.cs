@@ -3,18 +3,25 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using Organico.Library.Data;
 using Organico.Library.Model;
+using System.Reflection;
+using System.Text;
 
 namespace Organico.Pages;
 
 public class AddToCartModel : PageModel
 {
     private readonly ILogger<AddToCartModel> _logger;
+    private readonly IConfiguration _configuration;
+
+    private static HttpClient httpClient = new();
+
     public CartItem CartItem { get;set; }
     public List<Product> Products { get; set; }
 
-    public AddToCartModel(ILogger<AddToCartModel> logger)
+    public AddToCartModel(ILogger<AddToCartModel> logger, IConfiguration configuration)
     {
         _logger = logger;
+        _configuration = configuration;
     }
 
     public void OnGet()
@@ -39,17 +46,22 @@ public class AddToCartModel : PageModel
         return json;
     }
 
-    public IActionResult OnPost()
+    public async Task<IActionResult> OnPostAsync()
     {
-        CartItem = new CartItem(0, 1, "🍇", "Grapes box", 3.50m, 1);
-        ECommerceData.Instance.AddCartItem(
-            new CartItem(0, 
-            int.Parse(Request.Form["ProductId"].ToString()), 
-            "", 
-            "", 
-            0, 
-            int.Parse(Request.Form["Quantity"].ToString())
-        ));
+        int productId = int.Parse(Request.Form["ProductId"].ToString());
+        int quantity = int.Parse(Request.Form["Quantity"].ToString());
+        var product = ECommerceData.Instance.GetProduct(productId);
+        CartItem cartItem = new CartItem(productId,
+            productId,
+            product.Icon,
+            product.Description,
+            product.UnitPrice,
+            quantity
+        );
+        
+        Uri carrinhoUri = new Uri(new Uri($"{_configuration["FunctionAppUrl"]}"), "/api/carrinho");
+        var stringContent = new StringContent(JsonConvert.SerializeObject(cartItem), Encoding.UTF8, "application/json");
+        using HttpResponseMessage response = await httpClient.PostAsync(carrinhoUri, stringContent);
         return Redirect("/cart");
     }
 }

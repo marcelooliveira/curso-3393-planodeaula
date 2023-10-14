@@ -19,7 +19,7 @@ namespace Organico.Library
             return instance.InitializeAsync();
         }
 
-        public async Task<Cart?> GetCarrinho()
+        public async Task<Cart?> Get()
         {
             Cart? result = null;
 
@@ -39,6 +39,19 @@ namespace Organico.Library
             }
 
             return result;
+        }
+
+        public async Task<Cart> Post(CartItem cartItem)
+        {
+            var cart = await Get();
+            var oldCartItem = cart.items.SingleOrDefault(i => i.ProductId == cartItem.Id);
+            cart.items.RemoveAll(i => i.ProductId == cartItem.Id);
+            if (cartItem.Quantity > 0)
+            {
+                cart.items.Add(cartItem);
+            }
+            ItemResponse<Cart> itemResponse = await _container.UpsertItemAsync(cart);
+            return cart;
         }
 
         private async Task<CarrinhoCosmosClient> InitializeAsync()

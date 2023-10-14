@@ -1,9 +1,11 @@
 using System.Net;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Organico.Library;
+using Organico.Library.Model;
 
 namespace Organico.FunctionApp
 {
@@ -29,7 +31,7 @@ namespace Organico.FunctionApp
                 response.Headers.Add("Content-Type", "application/json; charset=utf-8");
 
                 var cosmosClient = await CarrinhoCosmosClient.CreateAsync();
-                var cart = await cosmosClient.GetCarrinho();
+                var cart = await cosmosClient.Get();
 
                 if (cart != null)
                 {
@@ -44,7 +46,11 @@ namespace Organico.FunctionApp
             if (req.Method == "POST")
             {
                 response = req.CreateResponse(HttpStatusCode.OK);
-                response.WriteString("ISTO É UM POST");
+                var content = await new StreamReader(req.Body).ReadToEndAsync();
+                CartItem cartItem = JsonConvert.DeserializeObject<CartItem>(content);
+
+                var cosmosClient = await CarrinhoCosmosClient.CreateAsync();
+                await cosmosClient.Post(cartItem);
                 return response;
             }
 
