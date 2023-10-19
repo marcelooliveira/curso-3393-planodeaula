@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "MarceloLojinhaApp": {
-      "commandName": "Project",
-      "commandLineArgs": "--port 7050",
-      "launchBrowser": false
-    }
-  }
-}
