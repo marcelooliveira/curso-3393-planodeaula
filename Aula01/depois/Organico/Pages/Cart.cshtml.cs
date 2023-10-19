@@ -10,13 +10,6 @@ public class CartModel : PageModel
 {
     private readonly ILogger<CartModel> _logger;
 
-    // HttpClient lifecycle management best practices:
-    // https://learn.microsoft.com/dotnet/fundamentals/networking/http/httpclient-guidelines#recommended-use
-    private static HttpClient httpClient = new()
-    {
-        BaseAddress = new Uri("https://oct12organicoapp.azurewebsites.net"),
-    };
-
     public List<CartItem> CartItems { get; set; }
 
     public CartModel(ILogger<CartModel> logger)
@@ -24,12 +17,9 @@ public class CartModel : PageModel
         _logger = logger;
     }
 
-    public async Task OnGet()
+    public void OnGet()
     {
-        using HttpResponseMessage response = await httpClient.GetAsync("api/carrinho");
-
-        var jsonResponse = await response.Content.ReadAsStringAsync();
-        CartItems = JsonConvert.DeserializeObject<List<CartItem>>(jsonResponse)!;
+        CartItems = ECommerceData.Instance.GetCartItems();
     }
 
     public IActionResult OnPost()
