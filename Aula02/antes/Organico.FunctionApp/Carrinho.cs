@@ -23,39 +23,28 @@ namespace Organico.FunctionApp
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            HttpResponseData response;
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            //response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+            //response.WriteString("Welcome to Azure Functions!");
+
+            response.Headers.Add("Content-Type", "application/json; charset=utf-8");
+
+            var cosmosClient = await CarrinhoCosmosClient.CreateAsync();
 
             if (req.Method == "GET")
             {
-                response = req.CreateResponse(HttpStatusCode.OK);
-                response.Headers.Add("Content-Type", "application/json; charset=utf-8");
-
-                var cosmosClient = await CarrinhoCosmosClient.CreateAsync();
                 var cart = await cosmosClient.Get();
-
-                if (cart != null)
-                {
-                    response.WriteString(JsonConvert.SerializeObject(cart.items));
-                }
-
-                response.WriteString("");
-
-                return response;
+                response.WriteString(JsonConvert.SerializeObject(cart.items));
             }
 
             if (req.Method == "POST")
             {
-                response = req.CreateResponse(HttpStatusCode.OK);
                 var content = await new StreamReader(req.Body).ReadToEndAsync();
                 CartItem cartItem = JsonConvert.DeserializeObject<CartItem>(content);
-
-                var cosmosClient = await CarrinhoCosmosClient.CreateAsync();
+                
                 await cosmosClient.Post(cartItem);
-                return response;
             }
 
-            response = req.CreateResponse(HttpStatusCode.BadRequest);
-            response.WriteString("Tipo Http inválido");
             return response;
         }
     }
