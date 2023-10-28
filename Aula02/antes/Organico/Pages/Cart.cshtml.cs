@@ -8,7 +8,8 @@ namespace Organico.Pages;
 
 public class CartModel : PageModel
 {
-    private ILogger<CartModel> _logger;
+    private readonly ILogger<CartModel> _logger;
+
     private readonly IConfiguration _configuration;
 
     private static HttpClient httpClient = new();
@@ -21,13 +22,19 @@ public class CartModel : PageModel
         _configuration = configuration;
     }
 
-    public async Task OnGet()
+    public async Task OnGetAsync()
     {
-        Uri carrinhoUri = new Uri(new Uri($"{_configuration["FunctionAppUrl"]}"), "/api/carrinho");
+        //CartItems = ECommerceData.Instance.GetCartItems();
+
+        // Obtém a URI da Azure Function do carrinho
+        Uri carrinhoUri = new Uri(_configuration["CarrinhoUrl"]);
+
+        // Realiza a requisição para a Azure Function do carrinho
         using HttpResponseMessage response = await httpClient.GetAsync(carrinhoUri);
 
+        // Tratar o resultado JSON do carrinho
         var jsonResponse = await response.Content.ReadAsStringAsync();
-        CartItems = JsonConvert.DeserializeObject<List<CartItem>>(jsonResponse)!;
+        CartItems = JsonConvert.DeserializeObject<List<CartItem>>(jsonResponse);
     }
 
     public IActionResult OnPost()
