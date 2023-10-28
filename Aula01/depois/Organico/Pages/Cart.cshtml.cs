@@ -10,31 +10,16 @@ public class CartModel : PageModel
 {
     private readonly ILogger<CartModel> _logger;
 
-    private readonly IConfiguration _configuration;
-
-    private static HttpClient httpClient = new();
-
     public List<CartItem> CartItems { get; set; }
 
-    public CartModel(ILogger<CartModel> logger, IConfiguration configuration)
+    public CartModel(ILogger<CartModel> logger)
     {
         _logger = logger;
-        _configuration = configuration;
     }
 
-    public async Task OnGetAsync()
+    public void OnGet()
     {
-        //CartItems = ECommerceData.Instance.GetCartItems();
-
-        // Obtém a URI da Azure Function do carrinho
-        Uri carrinhoUri = new Uri(_configuration["CarrinhoUrl"]);
-
-        // Realiza a requisição para a Azure Function do carrinho
-        using HttpResponseMessage response = await httpClient.GetAsync(carrinhoUri);
-
-        // Tratar o resultado JSON do carrinho
-        var jsonResponse = await response.Content.ReadAsStringAsync();
-        CartItems = JsonConvert.DeserializeObject<List<CartItem>>(jsonResponse);
+        CartItems = ECommerceData.Instance.GetCartItems();
     }
 
     public IActionResult OnPost()

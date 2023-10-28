@@ -12,8 +12,6 @@ public class AddToCartModel : PageModel
 {
     private readonly ILogger<AddToCartModel> _logger;
     private readonly IConfiguration _configuration;
-    private static HttpClient httpClient = new();
-
     public CartItem CartItem { get;set; }
     public List<Product> Products { get; set; }
 
@@ -45,7 +43,7 @@ public class AddToCartModel : PageModel
         return json;
     }
 
-    public async Task<IActionResult> OnPostAsync()
+    public IActionResult OnPost()
     {
         int productId = int.Parse(Request.Form["ProductId"].ToString());
         int quantity = int.Parse(Request.Form["Quantity"].ToString());
@@ -57,18 +55,7 @@ public class AddToCartModel : PageModel
             product.UnitPrice,
             quantity
         );
-        //ECommerceData.Instance.AddCartItem(cartItem);
-
-        // Obtém a URI da Azure Function do carrinho
-        Uri carrinhoUri = new Uri(_configuration["CarrinhoUrl"]);
-
-        // Serializa o item do carrinho
-        var stringContent = new StringContent(JsonConvert.SerializeObject(cartItem),
-            Encoding.UTF8, "application/json");
-
-        // Invoca o HTTP Post para adicionar/modificar/remover item do carrinho
-        using HttpResponseMessage response = await httpClient.PostAsync(carrinhoUri, stringContent);
-
+        ECommerceData.Instance.AddCartItem(cartItem);
         return Redirect("/cart");
     }
 }
