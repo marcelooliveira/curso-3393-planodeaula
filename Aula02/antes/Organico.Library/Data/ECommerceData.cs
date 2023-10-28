@@ -59,6 +59,7 @@ namespace Organico.Library.Data
             return items;
         }
 
+        // Adiciona um item ao carrinho de compras
         public void AddCartItem(CartItem cartItem)
         {
             var products = GetProductList();
@@ -71,6 +72,7 @@ namespace Organico.Library.Data
             }
         }
 
+        // Obtain orders awaiting payment
         public List<Order> GetOrdersAwaitingPayment()
         {
             var orders = _ordersAwaitingPayment.ToList();
@@ -78,28 +80,33 @@ namespace Organico.Library.Data
             return orders;
         }
 
+        // Obtain orders ready for delivery
         public Queue<Order> GetOrdersForDelivery()
         {
             return _ordersForDelivery;
         }
 
+        // Obtain orders with rejected payment
         public Queue<Order> GetOrdersRejected()
         {
             return _ordersRejected;
         }
 
+        // Move order from awaiting payment to ready for delivery
         public void ApprovePayment()
         {
             var order = _ordersAwaitingPayment.Dequeue();
             _ordersForDelivery.Enqueue(order);
         }
 
+        // Move order from awaiting payment to payment rejected
         public void RejectPayment()
         {
             var order = _ordersAwaitingPayment.Dequeue();
             _ordersRejected.Enqueue(order);
         }
 
+        // Cria um novo pedido e limpa o carrinho de compras
         public void CheckOut()
         {
             _maxOrderId++;

@@ -1,15 +1,9 @@
-using Newtonsoft.Json;
 using Organico.Library.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Organico.Library.Data
 {
-    // Wrapper for Hazelcast Client data operations
-    public class ECommerceData : BaseECommerceData
+    public class ECommerceData : BaseECommerceData, IECommerceData
     {
-        // Wraps Hazelcast Client data operations
         private Dictionary<int, CartItem> _cartItems;
         private Queue<Order> _ordersAwaitingPayment;
         private Queue<Order> _ordersForDelivery;

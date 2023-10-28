@@ -29,7 +29,6 @@ public class AddToCartModel : PageModel
         Products = ECommerceData.Instance.GetProductList();
     }
 
-    //int Id, int ProductId, int Quantity
     public IActionResult OnGetCartItem()
     {
         var products = ECommerceData.Instance.GetProductList();
@@ -57,16 +56,18 @@ public class AddToCartModel : PageModel
             product.UnitPrice,
             quantity
         );
+
+        // 1. Desativar acesso estático ao carrinho
         //ECommerceData.Instance.AddCartItem(cartItem);
 
-        // Obtém a URI da Azure Function do carrinho
+        // 2. Obter a URI da Azure Function do carrinho
         Uri carrinhoUri = new Uri(_configuration["CarrinhoUrl"]);
 
-        // Serializa o item do carrinho
+        // 3. Serializar o item do carrinho
         var stringContent = new StringContent(JsonConvert.SerializeObject(cartItem),
             Encoding.UTF8, "application/json");
 
-        // Invoca o HTTP Post para adicionar/modificar/remover item do carrinho
+        // 4. Invocar o HTTP Post para adicionar/modificar/remover item do carrinho
         using HttpResponseMessage response = await httpClient.PostAsync(carrinhoUri, stringContent);
 
         return Redirect("/cart");

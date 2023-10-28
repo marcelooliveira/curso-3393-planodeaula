@@ -10,16 +10,25 @@ public class CartModel : PageModel
 {
     private readonly ILogger<CartModel> _logger;
 
+    private readonly IConfiguration _configuration;
+
+	// 1. Novo objeto cliente para acesso cliente de requisições HTTP 
     public List<CartItem> CartItems { get; set; }
 
-    public CartModel(ILogger<CartModel> logger)
+    public CartModel(ILogger<CartModel> logger, IConfiguration configuration)
     {
         _logger = logger;
+        _configuration = configuration;
     }
 
     public void OnGet()
     {
+    	// 2. Desativar acesso aos dados do carrinho em memória
         CartItems = ECommerceData.Instance.GetCartItems();
+
+        // 3. Obter a URI da Azure Function do carrinho
+        // 4. Realizar a requisição para a Azure Function do carrinho
+        // 5. Tratar o resultado JSON do carrinho
     }
 
     public IActionResult OnPost()
