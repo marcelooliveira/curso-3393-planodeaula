@@ -64,7 +64,7 @@ namespace Organico.Library.Data
 
         public List<CartItem> GetCartItems()
         {
-        	// 1. Comentar acesso a itens na memória
+            // 1. Comentar acesso a itens na memória
             var items = _cartItems.Values.ToList();
             items.Sort((item1, item2) => item1.ProductId.CompareTo(item2.ProductId));
             return items;
@@ -79,6 +79,7 @@ namespace Organico.Library.Data
         // Adiciona um item ao carrinho de compras
         public void AddCartItem(CartItem cartItem)
         {
+            // 1. Comentar acesso a itens na memória
             var products = GetProductList();
             var product = products.FirstOrDefault(p => p.Id == cartItem.ProductId);
 
@@ -88,11 +89,11 @@ namespace Organico.Library.Data
                 _cartItems[newCartItem.ProductId] = newCartItem;
             }
 
-            // 1. Obter a URI da Azure Function do carrinho
+            // 2. Obter a URI da Azure Function do carrinho
 
-            // 2. Serializar o item do carrinho
+            // 3. Serializar o item do carrinho
 
-            // 3. Invocar o HTTP Post para adicionar/modificar/remover item do carrinho
+            // 4. Invocar o HTTP Post para adicionar/modificar/remover item do carrinho
         }
 
         // Cria um novo pedido e limpa o carrinho de compras
