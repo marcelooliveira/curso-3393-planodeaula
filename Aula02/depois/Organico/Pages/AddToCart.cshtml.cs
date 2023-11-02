@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
 using Organico.Library.Data;
 using Organico.Library.Model;
-using System.Reflection;
-using System.Text;
 
 namespace Organico.Pages;
 
@@ -12,8 +9,6 @@ public class AddToCartModel : PageModel
 {
     private readonly ILogger<AddToCartModel> _logger;
     private readonly IConfiguration _configuration;
-    private static HttpClient httpClient = new();
-
     public CartItem CartItem { get;set; }
     public List<Product> Products { get; set; }
 
@@ -57,19 +52,7 @@ public class AddToCartModel : PageModel
             quantity
         );
 
-        // 1. Desativar acesso estático ao carrinho
-        //ECommerceData.Instance.AddCartItem(cartItem);
-
-        // 2. Obter a URI da Azure Function do carrinho
-        Uri carrinhoUri = new Uri(_configuration["CarrinhoUrl"]);
-
-        // 3. Serializar o item do carrinho
-        var stringContent = new StringContent(JsonConvert.SerializeObject(cartItem),
-            Encoding.UTF8, "application/json");
-
-        // 4. Invocar o HTTP Post para adicionar/modificar/remover item do carrinho
-        using HttpResponseMessage response = await httpClient.PostAsync(carrinhoUri, stringContent);
-
+        await ECommerceData.Instance.AddCartItem(cartItem);
         return Redirect("/cart");
     }
 }

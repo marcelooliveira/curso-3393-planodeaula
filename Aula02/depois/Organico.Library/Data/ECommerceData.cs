@@ -1,4 +1,7 @@
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Organico.Library.Model;
+using System.Text;
 
 namespace Organico.Library.Data
 {
@@ -9,6 +12,11 @@ namespace Organico.Library.Data
         private Queue<Order> _ordersForDelivery;
         private Queue<Order> _ordersRejected;
         private int _maxOrderId;
+
+        private IConfiguration _configuration;
+
+        // 1. Novo objeto cliente para acesso cliente de requisições HTTP
+        private static HttpClient httpClient = new();
 
         private static ECommerceData? instance;
         public static ECommerceData Instance
@@ -52,15 +60,30 @@ namespace Organico.Library.Data
             _maxOrderId = 1008;
         }
 
-        public List<CartItem> GetCartItems()
+        public void SetConfiguration(IConfiguration configuration)
         {
-            var items = _cartItems.Values.ToList();
-            items.Sort((item1, item2) => item1.ProductId.CompareTo(item2.ProductId));
-            return items;
+            _configuration = configuration;
         }
 
+        public async Task<List<CartItem>> GetCartItems()
+        {
+            //var items = _cartItems.Values.ToList();
+            //items.Sort((item1, item2) => item1.ProductId.CompareTo(item2.ProductId));
+            //return items;
+
+            // 2. Obter a URI da Azure Function do carrinho
+            Uri carrinhoUri = new Uri(_configuration["CarrinhoUrl"]);
+
+            // 3. Realizar a requisição para a Azure Function do carrinho
+            using HttpResponseMessage response = await httpClient.GetAsync(carrinhoUri);
+
+            // 4. Tratar o resultado JSON do carrinho
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<CartItem>>(jsonResponse);
+        }
+        
         // Adiciona um item ao carrinho de compras
-        public void AddCartItem(CartItem cartItem)
+        public async Task AddCartItem(CartItem cartItem)
         {
             var products = GetProductList();
             var product = products.FirstOrDefault(p => p.Id == cartItem.ProductId);
@@ -70,40 +93,16 @@ namespace Organico.Library.Data
                 var newCartItem = new CartItem(cartItem.Id, product.Id, product.Icon, product.Description, product.UnitPrice, cartItem.Quantity);
                 _cartItems[newCartItem.ProductId] = newCartItem;
             }
-        }
 
-        // Obtain orders awaiting payment
-        public List<Order> GetOrdersAwaitingPayment()
-        {
-            var orders = _ordersAwaitingPayment.ToList();
-            orders.Sort((order1, order2) => order2.Id.CompareTo(order1.Id));
-            return orders;
-        }
+            // 1. Obter a URI da Azure Function do carrinho
+            Uri carrinhoUri = new Uri(_configuration["CarrinhoUrl"]);
 
-        // Obtain orders ready for delivery
-        public Queue<Order> GetOrdersForDelivery()
-        {
-            return _ordersForDelivery;
-        }
+            // 2. Serializar o item do carrinho
+            var stringContent = new StringContent(JsonConvert.SerializeObject(cartItem),
+                Encoding.UTF8, "application/json");
 
-        // Obtain orders with rejected payment
-        public Queue<Order> GetOrdersRejected()
-        {
-            return _ordersRejected;
-        }
-
-        // Move order from awaiting payment to ready for delivery
-        public void ApprovePayment()
-        {
-            var order = _ordersAwaitingPayment.Dequeue();
-            _ordersForDelivery.Enqueue(order);
-        }
-
-        // Move order from awaiting payment to payment rejected
-        public void RejectPayment()
-        {
-            var order = _ordersAwaitingPayment.Dequeue();
-            _ordersRejected.Enqueue(order);
+            // 3. Invocar o HTTP Post para adicionar/modificar/remover item do carrinho
+            using HttpResponseMessage response = await httpClient.PostAsync(carrinhoUri, stringContent);
         }
 
         // Cria um novo pedido e limpa o carrinho de compras
@@ -115,6 +114,40 @@ namespace Organico.Library.Data
             var order = new Order(orderId, DateTime.Now, _cartItems.Count, total);
             _ordersAwaitingPayment.Enqueue(order);
             _cartItems.Clear();
+        }
+
+        // Obtém pedidos aguardando pagamento
+        public List<Order> GetOrdersAwaitingPayment()
+        {
+            var orders = _ordersAwaitingPayment.ToList();
+            orders.Sort((order1, order2) => order2.Id.CompareTo(order1.Id));
+            return orders;
+        }
+
+        // Obtém pedidos prontos para entrega
+        public Queue<Order> GetOrdersForDelivery()
+        {
+            return _ordersForDelivery;
+        }
+
+        // Obtém pedidos com pagamento recusado
+        public Queue<Order> GetOrdersRejected()
+        {
+            return _ordersRejected;
+        }
+
+        // Move pedidos aguardando pagamento para prontos para entrega
+        public void ApprovePayment()
+        {
+            var order = _ordersAwaitingPayment.Dequeue();
+            _ordersForDelivery.Enqueue(order);
+        }
+
+        // Move pedidos aguardando pagamento para pagamento recusado
+        public void RejectPayment()
+        {
+            var order = _ordersAwaitingPayment.Dequeue();
+            _ordersRejected.Enqueue(order);
         }
     }
 }

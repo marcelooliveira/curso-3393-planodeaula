@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Organico.Library.Model;
 
 namespace Organico.Library.Data
@@ -9,6 +10,10 @@ namespace Organico.Library.Data
         private Queue<Order> _ordersForDelivery;
         private Queue<Order> _ordersRejected;
         private int _maxOrderId;
+
+        private IConfiguration _configuration;
+
+        // 1. Novo objeto cliente para acesso cliente de requisições HTTP
 
         private static ECommerceData? instance;
         public static ECommerceData Instance
@@ -52,13 +57,25 @@ namespace Organico.Library.Data
             _maxOrderId = 1008;
         }
 
+        public void SetConfiguration(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public List<CartItem> GetCartItems()
         {
+        	// 1. Comentar acesso a itens na memória
             var items = _cartItems.Values.ToList();
             items.Sort((item1, item2) => item1.ProductId.CompareTo(item2.ProductId));
             return items;
-        }
 
+            // 2. Obter a URI da Azure Function do carrinho
+
+            // 3. Realizar a requisição para a Azure Function do carrinho
+
+            // 4. Tratar o resultado JSON do carrinho
+        }
+        
         // Adiciona um item ao carrinho de compras
         public void AddCartItem(CartItem cartItem)
         {
@@ -70,40 +87,12 @@ namespace Organico.Library.Data
                 var newCartItem = new CartItem(cartItem.Id, product.Id, product.Icon, product.Description, product.UnitPrice, cartItem.Quantity);
                 _cartItems[newCartItem.ProductId] = newCartItem;
             }
-        }
 
-        // Obtain orders awaiting payment
-        public List<Order> GetOrdersAwaitingPayment()
-        {
-            var orders = _ordersAwaitingPayment.ToList();
-            orders.Sort((order1, order2) => order2.Id.CompareTo(order1.Id));
-            return orders;
-        }
+            // 1. Obter a URI da Azure Function do carrinho
 
-        // Obtain orders ready for delivery
-        public Queue<Order> GetOrdersForDelivery()
-        {
-            return _ordersForDelivery;
-        }
+            // 2. Serializar o item do carrinho
 
-        // Obtain orders with rejected payment
-        public Queue<Order> GetOrdersRejected()
-        {
-            return _ordersRejected;
-        }
-
-        // Move order from awaiting payment to ready for delivery
-        public void ApprovePayment()
-        {
-            var order = _ordersAwaitingPayment.Dequeue();
-            _ordersForDelivery.Enqueue(order);
-        }
-
-        // Move order from awaiting payment to payment rejected
-        public void RejectPayment()
-        {
-            var order = _ordersAwaitingPayment.Dequeue();
-            _ordersRejected.Enqueue(order);
+            // 3. Invocar o HTTP Post para adicionar/modificar/remover item do carrinho
         }
 
         // Cria um novo pedido e limpa o carrinho de compras
@@ -115,6 +104,40 @@ namespace Organico.Library.Data
             var order = new Order(orderId, DateTime.Now, _cartItems.Count, total);
             _ordersAwaitingPayment.Enqueue(order);
             _cartItems.Clear();
+        }
+
+        // Obtém pedidos aguardando pagamento
+        public List<Order> GetOrdersAwaitingPayment()
+        {
+            var orders = _ordersAwaitingPayment.ToList();
+            orders.Sort((order1, order2) => order2.Id.CompareTo(order1.Id));
+            return orders;
+        }
+
+        // Obtém pedidos prontos para entrega
+        public Queue<Order> GetOrdersForDelivery()
+        {
+            return _ordersForDelivery;
+        }
+
+        // Obtém pedidos com pagamento recusado
+        public Queue<Order> GetOrdersRejected()
+        {
+            return _ordersRejected;
+        }
+
+        // Move pedidos aguardando pagamento para prontos para entrega
+        public void ApprovePayment()
+        {
+            var order = _ordersAwaitingPayment.Dequeue();
+            _ordersForDelivery.Enqueue(order);
+        }
+
+        // Move pedidos aguardando pagamento para pagamento recusado
+        public void RejectPayment()
+        {
+            var order = _ordersAwaitingPayment.Dequeue();
+            _ordersRejected.Enqueue(order);
         }
     }
 }
