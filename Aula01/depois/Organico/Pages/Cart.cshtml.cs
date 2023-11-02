@@ -20,10 +20,10 @@ public class CartModel : PageModel
         _configuration = configuration;
     }
 
-    public async Task OnGetAsync()
+    public void OnGet()
     {
         ECommerceData.Instance.SetConfiguration(_configuration);
-        CartItems = await ECommerceData.Instance.GetCartItems();
+        CartItems = ECommerceData.Instance.GetCartItems();
     }
 
     public IActionResult OnPost()

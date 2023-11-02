@@ -39,7 +39,7 @@ public class AddToCartModel : PageModel
         return json;
     }
 
-    public async Task<IActionResult> OnPostAsync()
+    public IActionResult OnPost()
     {
         int productId = int.Parse(Request.Form["ProductId"].ToString());
         int quantity = int.Parse(Request.Form["Quantity"].ToString());
@@ -52,7 +52,7 @@ public class AddToCartModel : PageModel
             quantity
         );
 
-        await ECommerceData.Instance.AddCartItem(cartItem);
+        ECommerceData.Instance.AddCartItem(cartItem);
         return Redirect("/cart");
     }
 }

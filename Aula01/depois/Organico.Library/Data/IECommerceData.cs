@@ -15,13 +15,13 @@ namespace Organico.Library.Data
         /// Obtém os itens do carrinho de compras
         /// </summary>
         /// <returns>A lista do carrinho de compras</returns>
-        Task<List<CartItem>> GetCartItems();
+        List<CartItem> GetCartItems();
 
         /// <summary>
         /// Adiciona, modifica ou remove um item do carrinho de compras
         /// </summary>
         /// <param name="cartItem">Item do carrinho</param>
-        Task AddCartItem(CartItem cartItem);
+        void AddCartItem(CartItem cartItem);
 
         /// <summary>
         /// Cria um novo pedido e limpa o carrinho de compras

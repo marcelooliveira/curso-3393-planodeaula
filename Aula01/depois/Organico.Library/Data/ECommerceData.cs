@@ -1,7 +1,5 @@
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using Organico.Library.Model;
-using System.Text;
 
 namespace Organico.Library.Data
 {
@@ -16,7 +14,6 @@ namespace Organico.Library.Data
         private IConfiguration _configuration;
 
         // 1. Novo objeto cliente para acesso cliente de requisições HTTP
-        private static HttpClient httpClient = new();
 
         private static ECommerceData? instance;
         public static ECommerceData Instance
@@ -65,27 +62,24 @@ namespace Organico.Library.Data
             _configuration = configuration;
         }
 
-        public async Task<List<CartItem>> GetCartItems()
+        public List<CartItem> GetCartItems()
         {
             // 1. Comentar acesso a itens na memória
-            //var items = _cartItems.Values.ToList();
-            //items.Sort((item1, item2) => item1.ProductId.CompareTo(item2.ProductId));
-            //return items;
+            var items = _cartItems.Values.ToList();
+            items.Sort((item1, item2) => item1.ProductId.CompareTo(item2.ProductId));
+            return items;
 
             // 2. Obter a URI da Azure Function do carrinho
-            Uri carrinhoUri = new Uri(_configuration["CarrinhoUrl"]);
 
             // 3. Realizar a requisição para a Azure Function do carrinho
-            using HttpResponseMessage response = await httpClient.GetAsync(carrinhoUri);
 
             // 4. Tratar o resultado JSON do carrinho
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<CartItem>>(jsonResponse);
         }
         
         // Adiciona um item ao carrinho de compras
-        public async Task AddCartItem(CartItem cartItem)
+        public void AddCartItem(CartItem cartItem)
         {
+            // 1. Comentar acesso a itens na memória
             var products = GetProductList();
             var product = products.FirstOrDefault(p => p.Id == cartItem.ProductId);
 
@@ -95,15 +89,11 @@ namespace Organico.Library.Data
                 _cartItems[newCartItem.ProductId] = newCartItem;
             }
 
-            // 1. Obter a URI da Azure Function do carrinho
-            Uri carrinhoUri = new Uri(_configuration["CarrinhoUrl"]);
+            // 2. Obter a URI da Azure Function do carrinho
 
-            // 2. Serializar o item do carrinho
-            var stringContent = new StringContent(JsonConvert.SerializeObject(cartItem),
-                Encoding.UTF8, "application/json");
+            // 3. Serializar o item do carrinho
 
-            // 3. Invocar o HTTP Post para adicionar/modificar/remover item do carrinho
-            using HttpResponseMessage response = await httpClient.PostAsync(carrinhoUri, stringContent);
+            // 4. Invocar o HTTP Post para adicionar/modificar/remover item do carrinho
         }
 
         // Cria um novo pedido e limpa o carrinho de compras
