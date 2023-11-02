@@ -1,0 +1,57 @@
+@page
+@model TrackingModel
+@{
+    ViewData["Title"] = "Acompanhamento de Pedidos";
+}
+
+<div class="row mt-4">
+    <div class="col col-md-8 offset-md-2 alert alert-primary bg-success text-white text-center">
+        <span class="h3">🚚 PEDIDOS PREPARADOS PARA ENVIO</span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col col-md-8 offset-md-2">
+        <div class="row alert alert-warning bg-dark text-white">
+            <span class="col col-2 mt-0 h6 border-left border-light">Id</span>
+            <span class="col col-4 mt-0 h6 border-left border-light">Data</span>
+            <span class="col col-3 mt-0 h6 border-left border-light">No. Itens</span>
+            <span class="col col-3 mt-0 h6 border-left border-light text-right">Total</span>
+        </div>
+        @foreach(var order in Model.OrdersForDelivery)
+        {
+            <div class="row alert alert-warning flex-row align-items-center">
+                <span class="col col-2 mt-0 h6 border-left border-light">@order.Id</span>
+                <span class="col col-4 mt-0 h6 border-left border-light">@order.Placement.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                <span class="col col-3 mt-0 h6 border-left border-light">@order.ItemCount</span>
+                <span class="col col-3 mt-0 h6 border-left border-light text-right">@order.Total.ToString("0.00")</span>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col col-md-8 offset-md-2 alert alert-primary bg-danger text-white text-center">
+        <span class="h3">🚫 PEDIDOS COM PAGAMENTO REJEITADO</span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col col-md-8 offset-md-2">
+        <div class="row alert alert-warning bg-dark text-white">
+            <span class="col col-2 mt-0 h6 border-left border-light">Id</span>
+            <span class="col col-4 mt-0 h6 border-left border-light">Data</span>
+            <span class="col col-3 mt-0 h6 border-left border-light">No. Itens</span>
+            <span class="col col-3 mt-0 h6 border-left border-light text-right">Total</span>
+        </div>
+        @foreach(var order in Model.OrdersRejected)
+        {
+            <div class="row alert alert-warning flex-row align-items-center">
+                <span class="col col-2 mt-0 h6 border-left border-light">@order.Id</span>
+                <span class="col col-4 mt-0 h6 border-left border-light">@order.Placement.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                <span class="col col-3 mt-0 h6 border-left border-light">@order.ItemCount</span>
+                <span class="col col-3 mt-0 h6 border-left border-light text-right">@order.Total.ToString("0.00")</span>
+            </div>
+        }
+    </div>
+</div>

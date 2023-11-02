@@ -3,17 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aula02", "Aula02", "{0C3F79FC-ED41-4B64-9CEA-62089CF633EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organico", "depois\Organico\Organico.csproj", "{1906DF37-079B-4534-ADF0-D7D8D6A565E9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "antes", "antes", "{FDA81013-B48B-4C24-8EA9-4C106F88E04F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organico.Library", "depois\Organico.Library\Organico.Library.csproj", "{E91FE633-2E5B-47CE-96BF-F075D573E21B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "depois", "depois", "{D93C9D75-AFAF-4D04-B9F5-934DAEECD265}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organico", "antes\Organico\Organico.csproj", "{9E93AACD-0A07-45A2-B4A4-101D42EB0AC8}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organico.Library", "antes\Organico.Library\Organico.Library.csproj", "{20CE40E5-D03B-4E24-9628-7BF232B26025}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organico.FunctionApp", "antes\Organico.FunctionApp\Organico.FunctionApp.csproj", "{8998A51D-671C-4B1F-9F93-7B4AC5600549}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organico.FunctionApp", "depois\Organico.FunctionApp\Organico.FunctionApp.csproj", "{769951FB-91A5-426D-8CC7-ABBF7A3AD1F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,28 +15,21 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9E93AACD-0A07-45A2-B4A4-101D42EB0AC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E93AACD-0A07-45A2-B4A4-101D42EB0AC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E93AACD-0A07-45A2-B4A4-101D42EB0AC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E93AACD-0A07-45A2-B4A4-101D42EB0AC8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20CE40E5-D03B-4E24-9628-7BF232B26025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20CE40E5-D03B-4E24-9628-7BF232B26025}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20CE40E5-D03B-4E24-9628-7BF232B26025}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20CE40E5-D03B-4E24-9628-7BF232B26025}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8998A51D-671C-4B1F-9F93-7B4AC5600549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8998A51D-671C-4B1F-9F93-7B4AC5600549}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8998A51D-671C-4B1F-9F93-7B4AC5600549}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8998A51D-671C-4B1F-9F93-7B4AC5600549}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1906DF37-079B-4534-ADF0-D7D8D6A565E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1906DF37-079B-4534-ADF0-D7D8D6A565E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1906DF37-079B-4534-ADF0-D7D8D6A565E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1906DF37-079B-4534-ADF0-D7D8D6A565E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E91FE633-2E5B-47CE-96BF-F075D573E21B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E91FE633-2E5B-47CE-96BF-F075D573E21B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E91FE633-2E5B-47CE-96BF-F075D573E21B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E91FE633-2E5B-47CE-96BF-F075D573E21B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{769951FB-91A5-426D-8CC7-ABBF7A3AD1F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{769951FB-91A5-426D-8CC7-ABBF7A3AD1F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{769951FB-91A5-426D-8CC7-ABBF7A3AD1F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{769951FB-91A5-426D-8CC7-ABBF7A3AD1F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{FDA81013-B48B-4C24-8EA9-4C106F88E04F} = {0C3F79FC-ED41-4B64-9CEA-62089CF633EC}
-		{D93C9D75-AFAF-4D04-B9F5-934DAEECD265} = {0C3F79FC-ED41-4B64-9CEA-62089CF633EC}
-		{9E93AACD-0A07-45A2-B4A4-101D42EB0AC8} = {FDA81013-B48B-4C24-8EA9-4C106F88E04F}
-		{20CE40E5-D03B-4E24-9628-7BF232B26025} = {FDA81013-B48B-4C24-8EA9-4C106F88E04F}
-		{8998A51D-671C-4B1F-9F93-7B4AC5600549} = {FDA81013-B48B-4C24-8EA9-4C106F88E04F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA6FDA2C-0BE9-4E61-9905-5D5E3F6CD68F}
