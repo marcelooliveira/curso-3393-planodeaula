@@ -2,7 +2,9 @@
 
 namespace Organico.Library.Model
 {
-    // Representa um pedido
+    /// <summary>
+    /// Representa um pedido
+    /// </summary>
     public class Order : BaseEntity
     {
         [JsonProperty("customer")]

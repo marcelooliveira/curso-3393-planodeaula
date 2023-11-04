@@ -2,7 +2,9 @@
 
 namespace Organico.Library.Model
 {
-    // Base class for all entities
+    /// <summary>
+    /// Classe base para todas as entidades
+    /// </summary>
     public abstract class BaseEntity
     {
         [JsonProperty("id")]

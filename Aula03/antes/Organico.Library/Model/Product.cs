@@ -2,8 +2,9 @@
 
 namespace Organico.Library.Model
 {
-
-    // Represents a product
+    /// <summary>
+    /// Representa um produto
+    /// </summary>
     public class Product : BaseEntity
     {
         [JsonProperty("icon")]
