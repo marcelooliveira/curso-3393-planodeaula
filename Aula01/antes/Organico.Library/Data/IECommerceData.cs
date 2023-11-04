@@ -42,13 +42,13 @@ namespace Organico.Library.Data
         /// Pedidos prontos para entrega
         /// </summary>
         /// <returns>Uma fila com os pedidos</returns>
-        Queue<Order> GetOrdersForDelivery();
+        List<Order> GetOrdersForDelivery();
 
         /// <summary>
         /// Pedidos com pagamento rejeitado
         /// </summary>
         /// <returns>Uma fila com os pedidos</returns>
-        Queue<Order> GetOrdersRejected();
+        List<Order> GetOrdersRejected();
 
         /// <summary>
         /// Mover pedido de de "aguardando pagamento" para "pagamento rejeitado"

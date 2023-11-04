@@ -14,8 +14,8 @@ public class TrackingModel : PageModel
         _logger = logger;
     }
 
-    public Queue<Order> OrdersForDelivery { get; private set; }
-    public Queue<Order> OrdersRejected { get; private set; }
+    public List<Order> OrdersForDelivery { get; private set; }
+    public List<Order> OrdersRejected { get; private set; }
 
     public void OnGet()
     {

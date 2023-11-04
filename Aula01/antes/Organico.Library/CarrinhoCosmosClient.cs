@@ -3,20 +3,24 @@ using Organico.Library.Model;
 
 namespace Organico.Library
 {
-    public class CarrinhoCosmosClient
+    public class CarrinhoCosmosClient : BaseCosmosClient
     {
-        private CosmosClient _client;
-        private Database _database;
-        private Container _container;
+        protected override string ContainerId { get; set; } = "Carrinho";
+
+        private static CarrinhoCosmosClient? instance;
 
         private CarrinhoCosmosClient()
         {
         }
 
-        public static Task<CarrinhoCosmosClient> CreateAsync()
+        public static CarrinhoCosmosClient Instance()
         {
-            var instance = new CarrinhoCosmosClient();
-            return instance.InitializeAsync();
+            if (instance == null)
+            {
+                instance = new CarrinhoCosmosClient();
+                instance.InitializeAsync();
+            }
+            return instance;
         }
 
         public async Task<Cart?> Get()
@@ -44,25 +48,14 @@ namespace Organico.Library
         public async Task<Cart> Post(CartItem cartItem)
         {
             var cart = await Get();
-            var oldCartItem = cart.items.SingleOrDefault(i => i.ProductId == cartItem.Id);
-            cart.items.RemoveAll(i => i.ProductId == cartItem.Id);
+            var oldCartItem = cart.Items.SingleOrDefault(i => i.ProductId == cartItem.Id);
+            cart.Items.RemoveAll(i => i.ProductId == cartItem.Id);
             if (cartItem.Quantity > 0)
             {
-                cart.items.Add(cartItem);
+                cart.Items.Add(cartItem);
             }
             ItemResponse<Cart> itemResponse = await _container.UpsertItemAsync(cart);
             return cart;
-        }
-
-        private async Task<CarrinhoCosmosClient> InitializeAsync()
-        {
-            this._client = new CosmosClient(Environment.GetEnvironmentVariable("CosmosDB_URI"), Environment.GetEnvironmentVariable("CosmosDB_KEY"));
-            this._database = await _client.CreateDatabaseIfNotExistsAsync("organico");
-            this._container = await _database.CreateContainerIfNotExistsAsync(
-                "Carrinho",
-                "/id",
-                400);
-            return this;
         }
     }
 }
