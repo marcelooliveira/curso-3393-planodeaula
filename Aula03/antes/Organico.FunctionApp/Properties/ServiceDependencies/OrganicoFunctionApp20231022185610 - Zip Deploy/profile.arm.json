@@ -21,7 +21,7 @@
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "OrganicoFunctionApp20231013101522",
+      "defaultValue": "OrganicoFunctionApp20231022185610",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }

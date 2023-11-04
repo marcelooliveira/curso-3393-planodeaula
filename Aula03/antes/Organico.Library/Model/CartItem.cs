@@ -1,15 +1,32 @@
-﻿namespace Organico.Library.Model
+﻿using Newtonsoft.Json;
+
+namespace Organico.Library.Model
 {
     // Represents a group of a specific product in the cart
     public class CartItem : BaseEntity
     {
-        public int ProductId { get; set; }
-        public string Icon { get; set; }
-        public string Description { get; set; }
-        public decimal UnitPrice { get; set; }
-        public int Quantity { get; set; }
+        [JsonProperty("productId")]
+        public string ProductId { get; set; }
 
-        public CartItem(int id, int productId, string icon, string description, decimal unitPrice, int quantity)
+        [JsonProperty("icon")]
+        public string Icon { get; set; }
+        
+        [JsonProperty("description")]
+        public string Description { get; set; }
+        
+        [JsonProperty("unitPrice")]
+        public decimal UnitPrice { get; set; }
+        
+        [JsonProperty("quantity")]
+        public int Quantity { get; set; }
+        
+        [JsonProperty("total")]
+        public decimal Total
+        {
+            get { return Quantity * UnitPrice; }
+        }
+
+        public CartItem(string id, string productId, string icon, string description, decimal unitPrice, int quantity)
             : base(id)
         {
             ProductId = productId;
@@ -17,11 +34,6 @@
             Description = description;
             UnitPrice = unitPrice;
             Quantity = quantity;
-        }
-
-        public decimal Total
-        {
-            get { return Quantity * UnitPrice; }
         }
     }
 }

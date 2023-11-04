@@ -1,11 +1,14 @@
-﻿namespace Organico.Library.Model
+﻿using Newtonsoft.Json;
+
+namespace Organico.Library.Model
 {
     // Base class for all entities
     public abstract class BaseEntity
     {
-        public int Id { get; set; }
+        [JsonProperty("id")]
+        public string Id { get; set; }
 
-        protected BaseEntity(int id)
+        protected BaseEntity(string id)
         {
             Id = id;
         }

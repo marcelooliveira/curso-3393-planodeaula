@@ -14,12 +14,12 @@ public class TrackingModel : PageModel
         _logger = logger;
     }
 
-    public Queue<Order> OrdersForDelivery { get; private set; }
-    public Queue<Order> OrdersRejected { get; private set; }
+    public List<Order> OrdersForDelivery { get; private set; }
+    public List<Order> OrdersRejected { get; private set; }
 
-    public void OnGet()
+    public async Task OnGetAsync()
     {
-        OrdersForDelivery = ECommerceData.Instance.GetOrdersForDelivery();
-        OrdersRejected = ECommerceData.Instance.GetOrdersRejected();
+        OrdersForDelivery = await ECommerceData.Instance.GetOrdersForDeliveryAsync();
+        OrdersRejected = await ECommerceData.Instance.GetOrdersRejectedAsync();
     }
 }

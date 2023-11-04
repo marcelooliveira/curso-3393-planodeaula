@@ -26,33 +26,33 @@ namespace Organico.Library.Data
         /// <summary>
         /// Cria um novo pedido e limpa o carrinho de compras
         /// </summary>
-        void CheckOut();
+        Task CheckOutAsync();
 
         /// <summary>
         /// Mover pedido de de "aguardando pagamento" para "pronto para entrega"
         /// </summary>
-        void ApprovePayment();
+        Task ApprovePaymentAsync();
 
         /// <summary>
         /// Pedidos aguardando pagamento
         /// </summary>
-        List<Order> GetOrdersAwaitingPayment();
+        Task<List<Order>> GetOrdersAwaitingPayment();
 
         /// <summary>
         /// Pedidos prontos para entrega
         /// </summary>
         /// <returns>Uma fila com os pedidos</returns>
-        Queue<Order> GetOrdersForDelivery();
+        Task<List<Order>> GetOrdersForDeliveryAsync();
 
         /// <summary>
         /// Pedidos com pagamento rejeitado
         /// </summary>
         /// <returns>Uma fila com os pedidos</returns>
-        Queue<Order> GetOrdersRejected();
+        Task<List<Order>> GetOrdersRejectedAsync();
 
         /// <summary>
         /// Mover pedido de de "aguardando pagamento" para "pagamento rejeitado"
         /// </summary>
-        void RejectPayment();
+        Task RejectPaymentAsync();
     }
 }

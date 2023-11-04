@@ -20,7 +20,7 @@ public class AddToCartModel : PageModel
 
     public void OnGet()
     {
-        CartItem = new CartItem(0, 1, "🍇", "Grapes box", 3.50m, 1);
+        CartItem = new CartItem("0", "1", "🍇", "Grapes box", 3.50m, 1);
         Products = ECommerceData.Instance.GetProductList();
     }
 
@@ -28,8 +28,8 @@ public class AddToCartModel : PageModel
     {
         var products = ECommerceData.Instance.GetProductList();
 
-        var productId = int.Parse(Request.Query["ProductId"].ToString());
-        var itemId = int.Parse(Request.Query["Id"].ToString());
+        var productId = Request.Query["ProductId"].ToString();
+        var itemId = Request.Query["Id"].ToString();
         var quantity = int.Parse(Request.Query["Quantity"].ToString());
 
         var product = products.FirstOrDefault(p => p.Id == productId);
@@ -41,7 +41,7 @@ public class AddToCartModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        int productId = int.Parse(Request.Form["ProductId"].ToString());
+        string productId = Request.Form["ProductId"].ToString();
         int quantity = int.Parse(Request.Form["Quantity"].ToString());
         var product = ECommerceData.Instance.GetProduct(productId);
         CartItem cartItem = new CartItem(productId,

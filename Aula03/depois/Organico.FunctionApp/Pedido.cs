@@ -1,4 +1,4 @@
-using System.Net;
+﻿using System.Net;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -8,16 +8,16 @@ using Organico.Library.Model;
 
 namespace Organico.FunctionApp
 {
-    public class Carrinho
+    public class Pedido
     {
         private readonly ILogger _logger;
 
-        public Carrinho(ILoggerFactory loggerFactory)
+        public Pedido(ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger<Carrinho>();
+            _logger = loggerFactory.CreateLogger<Pedido>();
         }
 
-        [Function("Carrinho")]
+        [Function("Pedido")]
         public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
@@ -29,22 +29,22 @@ namespace Organico.FunctionApp
 
             response.Headers.Add("Content-Type", "application/json; charset=utf-8");
 
-            var cosmosClient = CarrinhoCosmosClient.Instance();
+            var cosmosClient = PedidosCosmosClient.Instance();
 
             if (req.Method == "GET")
             {
-                //ler carrinho
-                var cart = await cosmosClient.Get();
-                response.WriteString(JsonConvert.SerializeObject(cart.Items));
+                //ler pedidos
+                var pedidos = await cosmosClient.GetList();
+                response.WriteString(JsonConvert.SerializeObject(pedidos));
             }
 
             if (req.Method == "POST")
             {
-                //inserir/modificar/remover item carrinho
+                //gravar pedido
                 var content = await new StreamReader(req.Body).ReadToEndAsync();
-                CartItem cartItem = JsonConvert.DeserializeObject<CartItem>(content);
+                Order order = JsonConvert.DeserializeObject<Order>(content);
 
-                await cosmosClient.Post(cartItem);
+                await cosmosClient.Post(order);
             }
 
             return response;
