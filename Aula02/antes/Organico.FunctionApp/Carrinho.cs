@@ -29,13 +29,13 @@ namespace Organico.FunctionApp
 
             response.Headers.Add("Content-Type", "application/json; charset=utf-8");
 
-            var cosmosClient = await CarrinhoCosmosClient.CreateAsync();
+            var cosmosClient = CarrinhoCosmosClient.Instance();
 
             if (req.Method == "GET")
             {
                 //ler carrinho
                 var cart = await cosmosClient.Get();
-                response.WriteString(JsonConvert.SerializeObject(cart.items));
+                response.WriteString(JsonConvert.SerializeObject(cart.Items));
             }
 
             if (req.Method == "POST")
