@@ -47,7 +47,7 @@ namespace Organico.FunctionApp
 
             if (req.Method == "POST")
             {
-                //inserir/modificar/remover item carrinho
+                // 6. inserir/modificar/remover item do carrinho
                 var content = await new StreamReader(req.Body).ReadToEndAsync();
                 CartItem cartItem = JsonConvert.DeserializeObject<CartItem>(content);
 
