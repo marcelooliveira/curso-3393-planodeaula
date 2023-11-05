@@ -37,10 +37,10 @@ namespace Organico.FunctionApp
 
             if (req.Method == "GET")
             {
-                // 4. Adicionar o cabeçalho para a resposta JSON
+                // 2. Adicionar o cabeçalho para a resposta JSON
                 response.Headers.Add("Content-Type", "application/json; charset=utf-8");
 
-                // 5. ler carrinho de compras da nuvem
+                //ler carrinho
                 var cart = await cosmosClient.Get();
                 response.WriteString(JsonConvert.SerializeObject(cart.Items));
             }
