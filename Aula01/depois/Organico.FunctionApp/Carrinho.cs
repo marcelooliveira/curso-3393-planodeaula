@@ -2,6 +2,8 @@ using System.Net;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Organico.Library;
 
 namespace Organico.FunctionApp
 {
@@ -15,14 +17,31 @@ namespace Organico.FunctionApp
         }
 
         [Function("Carrinho")]
-        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
             var response = req.CreateResponse(HttpStatusCode.OK);
-            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
-            response.WriteString("Welcome to Azure Functions!");
+            // 1. Comentar a resposta padrão
+            //response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+
+            //response.WriteString("Welcome to Azure Functions!");
+
+            // 2. Acessar o objeto cliente de acesso a dados do Carrinho de Compras
+            var cosmosClient = CarrinhoCosmosClient.Instance();
+
+            // 3. Identificar quando a requisição é GET ou POST 
+            if (req.Method == "GET")
+            {
+                // 4. Adicionar o cabeçalho para a resposta JSON
+                response.Headers.Add("Content-Type", "application/json; charset=utf-8");
+
+                // 5. ler carrinho de compras da nuvem
+                var cart = await cosmosClient.Get();
+
+                response.WriteString(JsonConvert.SerializeObject(cart.Items));
+            }
 
             return response;
         }
