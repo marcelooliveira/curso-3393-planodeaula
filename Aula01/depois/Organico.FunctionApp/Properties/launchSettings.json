@@ -2,7 +2,7 @@
   "profiles": {
     "Organico.FunctionApp": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7116",
+      "commandLineArgs": "--port 7202",
       "launchBrowser": false
     }
   }
