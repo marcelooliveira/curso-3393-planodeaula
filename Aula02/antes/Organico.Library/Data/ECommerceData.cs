@@ -122,22 +122,26 @@ namespace Organico.Library.Data
 
             _cartItems.Clear();
         }
-        
+
+        // Obtém pedidos aguardando pagamento
         public List<Order> GetOrdersAwaitingPayment()
         {
             return GetFilteredOrders(OrderStatus.AwaitingPayment);
         }
 
+        // Obtém pedidos prontos para entrega
         public List<Order> GetOrdersForDelivery()
         {
             return GetFilteredOrders(OrderStatus.ForDelivery);
         }
 
+        // Obtém pedidos prontos para entrega
         public List<Order> GetOrdersRejected()
         {
             return GetFilteredOrders(OrderStatus.Rejected);
         }
 
+        // Move pedido aguardando pagamento para pronto para entrega
         public void ApprovePayment()
         {
             var orders = GetFilteredOrders(OrderStatus.AwaitingPayment);
@@ -149,6 +153,7 @@ namespace Organico.Library.Data
             }
         }
 
+        // Move pedido aguardando pagamento para pagamento recusado
         public void RejectPayment()
         {
             var orders = GetFilteredOrders(OrderStatus.AwaitingPayment);
@@ -160,6 +165,7 @@ namespace Organico.Library.Data
             }
         }
 
+        // Obtém pedidos filtrados por status
         private List<Order> GetFilteredOrders(OrderStatus filterStatus)
         {
             _orders = GetOrders();
@@ -168,13 +174,21 @@ namespace Organico.Library.Data
 
         private List<Order> GetOrders()
         {
+            // 1. Comentar fluxo atual
             var orders = _orders.ToList();
             orders.Sort((order1, order2) => order2.Id.CompareTo(order1.Id));
             return orders;
+
+            // 2. Obter a URI da Azure Function dos pedidos
+
+            // 3. Realizar a requisição para a Azure Function dos pedidos
+
+            // 4. Tratar o resultado JSON dos pedidos
         }
 
         private void SaveOrder(Order order)
         {
+            // 1. Comentar fluxo atual
             var existingOrder = _orders.Where(o => o.Id == order.Id).SingleOrDefault();
             if (existingOrder != null)
             {
@@ -182,6 +196,10 @@ namespace Organico.Library.Data
             }
 
             _orders.Add(order);
+
+            // 2. Obter a URI da Azure Function do pedido
+
+            // 3. Serializar o pedido
         }
     }
 }

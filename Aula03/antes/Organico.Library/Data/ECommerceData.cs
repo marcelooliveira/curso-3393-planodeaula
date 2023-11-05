@@ -16,6 +16,7 @@ namespace Organico.Library.Data
         private IConfiguration _configuration;
 
         // 1. Novo objeto cliente para acesso cliente de requisições HTTP
+        // <image url="$(ProjectDir)img\http.png"/>
         private static HttpClient httpClient = new();
 
         private static ECommerceData? instance;
@@ -149,7 +150,7 @@ namespace Organico.Library.Data
             return await GetFilteredOrders(OrderStatus.Rejected);
         }
 
-        // Move pedidos aguardando pagamento para prontos para entrega
+        // Move pedido aguardando pagamento para pronto para entrega
         public async Task ApprovePaymentAsync()
         {
             var orders = await GetFilteredOrders(OrderStatus.AwaitingPayment);
@@ -161,7 +162,7 @@ namespace Organico.Library.Data
             }
         }
 
-        // Move pedidos aguardando pagamento para pagamento recusado
+        // Move pedido aguardando pagamento para pagamento recusado
         public async Task RejectPaymentAsync()
         {
             var orders = await GetFilteredOrders(OrderStatus.AwaitingPayment);
@@ -173,6 +174,7 @@ namespace Organico.Library.Data
             }
         }
 
+        // Obtém pedidos filtrados por status
         private async Task<List<Order>> GetFilteredOrders(OrderStatus filterStatus)
         {
             _orders = await GetOrdersAsync();
@@ -181,6 +183,7 @@ namespace Organico.Library.Data
 
         private async Task<List<Order>> GetOrdersAsync()
         {
+            // 1. Comentar fluxo atual
             //var orders = _ordersAwaitingPayment.ToList();
             //orders.Sort((order1, order2) => order2.Id.CompareTo(order1.Id));
             //return orders;
@@ -198,10 +201,19 @@ namespace Organico.Library.Data
 
         private async Task SaveOrder(Order order)
         {
-            // 2. Obter a URI da Azure Function do carrinho
+            // 1. Comentar fluxo atual
+            var existingOrder = _orders.Where(o => o.Id == order.Id).SingleOrDefault();
+            if (existingOrder != null)
+            {
+                _orders.Remove(existingOrder);
+            }
+
+            _orders.Add(order);
+
+            // 2. Obter a URI da Azure Function do pedido
             Uri pedidosUri = new Uri(_configuration["PedidosUrl"]);
 
-            // 3. Serializar o order
+            // 3. Serializar o pedido
             var stringContent = new StringContent(JsonConvert.SerializeObject(order),
                 Encoding.UTF8, "application/json");
             await httpClient.PostAsync(pedidosUri, stringContent);
