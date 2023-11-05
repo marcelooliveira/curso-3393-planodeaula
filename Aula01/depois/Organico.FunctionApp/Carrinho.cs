@@ -4,6 +4,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Organico.Library;
+using Organico.Library.Model;
 
 namespace Organico.FunctionApp
 {
@@ -41,6 +42,16 @@ namespace Organico.FunctionApp
                 var cart = await cosmosClient.Get();
 
                 response.WriteString(JsonConvert.SerializeObject(cart.Items));
+            }
+
+            if (req.Method == "POST")
+            {
+                // 6. inserir/modificar/remover item do carrinho
+                //req.Body
+                var content = await new StreamReader(req.Body).ReadToEndAsync();
+                var cartItem = JsonConvert.DeserializeObject<CartItem>(content);
+
+                await cosmosClient.Post(cartItem);
             }
 
             return response;
