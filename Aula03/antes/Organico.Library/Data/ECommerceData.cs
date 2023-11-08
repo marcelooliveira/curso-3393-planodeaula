@@ -9,14 +9,10 @@ namespace Organico.Library.Data
     {
         private List<Order> _orders = new List<Order>();
         private Dictionary<string, CartItem> _cartItems;
-        //private Queue<Order> _ordersAwaitingPayment;
-        //private Queue<Order> _ordersForDelivery;
-        //private Queue<Order> _ordersRejected;
 
         private IConfiguration _configuration;
 
         // 1. Novo objeto cliente para acesso cliente de requisições HTTP
-        // <image url="$(ProjectDir)img\http.png"/>
         private static HttpClient httpClient = new();
 
         private static ECommerceData? instance;
@@ -41,9 +37,9 @@ namespace Organico.Library.Data
 
             _orders = new List<Order>
             {
-                //new Order("1006", new DateTime(2021, 10, 11, 3, 3, 0), 7, 70.00m),
-                //new Order("1007", new DateTime(2021, 10, 12, 17, 17, 0), 2, 20.00m),
-                //new Order("1008", new DateTime(2021, 10, 13, 21, 9, 0), 5, 50.00m),
+                new Order("1006", new DateTime(2021, 10, 11, 3, 3, 0), 7, 70.00m),
+                new Order("1007", new DateTime(2021, 10, 12, 17, 17, 0), 2, 20.00m),
+                new Order("1008", new DateTime(2021, 10, 13, 21, 9, 0), 5, 50.00m),
                 new Order("1002", new DateTime(2021, 10, 2, 23, 3, 0), 5, 50.00m, (byte)OrderStatus.ForDelivery),
                 new Order("1003", new DateTime(2021, 10, 9, 7, 7, 0), 3, 30.00m, (byte)OrderStatus.ForDelivery),
                 new Order("1001", new DateTime(2021, 10, 1, 18, 32, 0), 5, 35.00m, (byte)OrderStatus.Rejected),
@@ -108,17 +104,13 @@ namespace Organico.Library.Data
         // Cria um novo pedido e limpa o carrinho de compras
         public async Task CheckOutAsync()
         {
-            _orders = await GetOrdersAsync();
+            _orders = GetOrders();
             var orderId = _orders.Any() ? _orders.Max(o => int.Parse(o.Id) + 1) : 0;
             int itemCount = _cartItems.Count;
             var total = _cartItems.Values.Sum(item => item.Quantity * item.UnitPrice);
             var order = new Order(orderId.ToString(), DateTime.Now, itemCount, total);
 
-            // 1. Comentar o fluxo atual
-            //_ordersAwaitingPayment.Enqueue(order);
-            //_cartItems.Clear();
-
-            await SaveOrder(order);
+            SaveOrder(order);
 
             // 5. Limpar o carrinho
             foreach (var item in _cartItems)
@@ -132,74 +124,71 @@ namespace Organico.Library.Data
         }
 
         // Obtém pedidos aguardando pagamento
-        public async Task<List<Order>> GetOrdersAwaitingPayment()
+        public List<Order> GetOrdersAwaitingPayment()
         {
-            return await GetFilteredOrders(OrderStatus.AwaitingPayment);
+            return GetFilteredOrders(OrderStatus.AwaitingPayment);
         }
-
 
         // Obtém pedidos prontos para entrega
-        public async Task<List<Order>> GetOrdersForDeliveryAsync()
+        public List<Order> GetOrdersForDelivery()
         {
-            return await GetFilteredOrders(OrderStatus.ForDelivery);
+            return GetFilteredOrders(OrderStatus.ForDelivery);
         }
 
-        // Obtém pedidos com pagamento recusado
-        public async Task<List<Order>> GetOrdersRejectedAsync()
+        // Obtém pedidos prontos para entrega
+        public List<Order> GetOrdersRejected()
         {
-            return await GetFilteredOrders(OrderStatus.Rejected);
+            return GetFilteredOrders(OrderStatus.Rejected);
         }
 
         // Move pedido aguardando pagamento para pronto para entrega
-        public async Task ApprovePaymentAsync()
+        public void ApprovePayment()
         {
-            var orders = await GetFilteredOrders(OrderStatus.AwaitingPayment);
+            var orders = GetFilteredOrders(OrderStatus.AwaitingPayment);
             if (orders.Any())
             {
-                var order = orders.OrderBy(o => int.Parse(o.Id)).Last();
+                var order = orders.OrderBy(o => int.Parse(o.Id)).First();
                 order.Status = (int)OrderStatus.ForDelivery;
-                await SaveOrder(order);
+                SaveOrder(order);
             }
         }
 
         // Move pedido aguardando pagamento para pagamento recusado
-        public async Task RejectPaymentAsync()
+        public void RejectPayment()
         {
-            var orders = await GetFilteredOrders(OrderStatus.AwaitingPayment);
+            var orders = GetFilteredOrders(OrderStatus.AwaitingPayment);
             if (orders.Any())
             {
-                var order = orders.OrderBy(o => int.Parse(o.Id)).Last();
+                var order = orders.OrderBy(o => int.Parse(o.Id)).First();
                 order.Status = (int)OrderStatus.Rejected;
-                await SaveOrder(order);
+                SaveOrder(order);
             }
         }
 
         // Obtém pedidos filtrados por status
-        private async Task<List<Order>> GetFilteredOrders(OrderStatus filterStatus)
+        private List<Order> GetFilteredOrders(OrderStatus filterStatus)
         {
-            _orders = await GetOrdersAsync();
+            _orders = GetOrders();
             return _orders.Where(o => o.Status == (byte)filterStatus).ToList();
         }
 
-        private async Task<List<Order>> GetOrdersAsync()
+        // Obtém os pedidos
+        private List<Order> GetOrders()
         {
             // 1. Comentar fluxo atual
-            //var orders = _ordersAwaitingPayment.ToList();
-            //orders.Sort((order1, order2) => order2.Id.CompareTo(order1.Id));
-            //return orders;
+            var orders = _orders.ToList();
+            orders.Sort((order1, order2) => order2.Id.CompareTo(order1.Id));
+            return orders;
 
             // 2. Obter a URI da Azure Function dos pedidos
-            Uri pedidosUri = new Uri(_configuration["PedidosUrl"]);
 
             // 3. Realizar a requisição para a Azure Function dos pedidos
-            using HttpResponseMessage response = await httpClient.GetAsync(pedidosUri);
 
             // 4. Tratar o resultado JSON dos pedidos
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<Order>>(jsonResponse);
         }
 
-        private async Task SaveOrder(Order order)
+        // Grava o pedido
+        private void SaveOrder(Order order)
         {
             // 1. Comentar fluxo atual
             var existingOrder = _orders.Where(o => o.Id == order.Id).SingleOrDefault();
@@ -211,12 +200,8 @@ namespace Organico.Library.Data
             _orders.Add(order);
 
             // 2. Obter a URI da Azure Function do pedido
-            Uri pedidosUri = new Uri(_configuration["PedidosUrl"]);
 
             // 3. Serializar o pedido
-            var stringContent = new StringContent(JsonConvert.SerializeObject(order),
-                Encoding.UTF8, "application/json");
-            await httpClient.PostAsync(pedidosUri, stringContent);
         }
     }
 }

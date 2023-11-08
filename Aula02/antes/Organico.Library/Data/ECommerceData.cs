@@ -13,7 +13,6 @@ namespace Organico.Library.Data
         private IConfiguration _configuration;
 
         // 1. Novo objeto cliente para acesso cliente de requisições HTTP
-        private static HttpClient httpClient = new();
 
         private static ECommerceData? instance;
         public static ECommerceData Instance
@@ -27,13 +26,12 @@ namespace Organico.Library.Data
 
         private ECommerceData()
         {
-            _cartItems = new Dictionary<string, CartItem>();
-            //_cartItems = new Dictionary<int, CartItem>
-            //{
-            //    { 17, new CartItem(1, 17, "🥥", "Coco (un)", 4.50m, 2) },
-            //    { 13, new CartItem(2, 13, "🍒", "Cereja (kg)", 3.50m, 3) },
-            //    { 4, new CartItem(3, 4, "🍊", "Tangerina (kg)", 3.50m, 1) }
-            //};
+            _cartItems = new Dictionary<string, CartItem>
+            {
+                { "17", new CartItem("1", "17", "🥥", "Coco (un)", 4.50m, 2) },
+                { "13", new CartItem("2", "13", "🍒", "Cereja (kg)", 3.50m, 3) },
+                { "4", new CartItem("3", "4", "🍊", "Tangerina (kg)", 3.50m, 1) }
+            };
 
             _orders = new List<Order>
             {
@@ -53,56 +51,42 @@ namespace Organico.Library.Data
             _configuration = configuration;
         }
 
-        public async Task<List<CartItem>> GetCartItems()
+        public List<CartItem> GetCartItems()
         {
             // 1. Comentar o fluxo atual de listagem de itens
-            //var items = _cartItems.Values.ToList();
-            //items.Sort((item1, item2) => item1.ProductId.CompareTo(item2.ProductId));
-            //return items;
+            var items = _cartItems.Values.ToList();
+            items.Sort((item1, item2) => item1.ProductId.CompareTo(item2.ProductId));
+            return items;
 
             // 2. Obter a URI da Azure Function do carrinho
-            Uri carrinhoUri = new Uri(_configuration["CarrinhoUrl"]);
 
             // 3. Realizar a requisição para a Azure Function do carrinho
-            using HttpResponseMessage response = await httpClient.GetAsync(carrinhoUri);
 
             // 4. Tratar o resultado JSON do carrinho
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            var items = JsonConvert.DeserializeObject<List<CartItem>>(jsonResponse);
-            _cartItems.Clear();
-            foreach (var item in items)
-            {
-                _cartItems[item.ProductId] = item;
-            }
-            return items;
         }
         
         // Adiciona um item ao carrinho de compras
-        public async Task AddCartItem(CartItem cartItem)
+        public void AddCartItem(CartItem cartItem)
         {
             var products = GetProductList();
             var product = products.FirstOrDefault(p => p.Id == cartItem.ProductId);
 
             // 1. Comentar o fluxo atual
-            //if (product != null)
-            //{
-            //    var newCartItem = new CartItem(cartItem.Id, product.Id, product.Icon, product.Description, product.UnitPrice, cartItem.Quantity);
-            //    _cartItems[newCartItem.ProductId] = newCartItem;
-            //}
+            if (product != null)
+            {
+                var newCartItem = new CartItem(cartItem.Id, product.Id, product.Icon, product.Description, product.UnitPrice, cartItem.Quantity);
+                _cartItems[newCartItem.ProductId] = newCartItem;
+            }
 
             // 2. Obter a URI da Azure Function do carrinho
-            Uri carrinhoUri = new Uri(_configuration["CarrinhoUrl"]);
 
             // 3. Serializar o item do carrinho
-            var stringContent = new StringContent(JsonConvert.SerializeObject(cartItem),
-                Encoding.UTF8, "application/json");
 
             // 4. Invocar o HTTP Post para adicionar/modificar/remover item do carrinho
-            using HttpResponseMessage response = await httpClient.PostAsync(carrinhoUri, stringContent);
         }
 
         // Cria um novo pedido e limpa o carrinho de compras
-        public async Task CheckOutAsync()
+        public void CheckOut()
         {
             _orders = GetOrders();
             var orderId = _orders.Any() ? _orders.Max(o => int.Parse(o.Id) + 1) : 0;
@@ -117,7 +101,7 @@ namespace Organico.Library.Data
             {
                 var cartItem = item.Value;
                 cartItem.Quantity = 0;
-                await AddCartItem(cartItem);
+                AddCartItem(cartItem);
             }
 
             _cartItems.Clear();
@@ -172,6 +156,7 @@ namespace Organico.Library.Data
             return _orders.Where(o => o.Status == (byte)filterStatus).ToList();
         }
 
+        // Obtém os pedidos
         private List<Order> GetOrders()
         {
             // 1. Comentar fluxo atual
@@ -186,6 +171,7 @@ namespace Organico.Library.Data
             // 4. Tratar o resultado JSON dos pedidos
         }
 
+        // Grava o pedido
         private void SaveOrder(Order order)
         {
             // 1. Comentar fluxo atual

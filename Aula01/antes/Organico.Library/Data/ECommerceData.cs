@@ -106,22 +106,26 @@ namespace Organico.Library.Data
 
             _cartItems.Clear();
         }
-        
+
+        // Obtém pedidos aguardando pagamento
         public List<Order> GetOrdersAwaitingPayment()
         {
             return GetFilteredOrders(OrderStatus.AwaitingPayment);
         }
 
+        // Obtém pedidos prontos para entrega
         public List<Order> GetOrdersForDelivery()
         {
             return GetFilteredOrders(OrderStatus.ForDelivery);
         }
 
+        // Obtém pedidos prontos para entrega
         public List<Order> GetOrdersRejected()
         {
             return GetFilteredOrders(OrderStatus.Rejected);
         }
 
+        // Move pedido aguardando pagamento para pronto para entrega
         public void ApprovePayment()
         {
             var orders = GetFilteredOrders(OrderStatus.AwaitingPayment);
@@ -133,6 +137,7 @@ namespace Organico.Library.Data
             }
         }
 
+        // Move pedido aguardando pagamento para pagamento recusado
         public void RejectPayment()
         {
             var orders = GetFilteredOrders(OrderStatus.AwaitingPayment);
@@ -144,12 +149,14 @@ namespace Organico.Library.Data
             }
         }
 
+        // Obtém pedidos filtrados por status
         private List<Order> GetFilteredOrders(OrderStatus filterStatus)
         {
             _orders = GetOrders();
             return _orders.Where(o => o.Status == (byte)filterStatus).ToList();
         }
 
+        // Obtém os pedidos
         private List<Order> GetOrders()
         {
             var orders = _orders.ToList();
@@ -157,6 +164,7 @@ namespace Organico.Library.Data
             return orders;
         }
 
+        // Grava o pedido
         private void SaveOrder(Order order)
         {
             var existingOrder = _orders.Where(o => o.Id == order.Id).SingleOrDefault();

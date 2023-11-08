@@ -18,23 +18,21 @@ namespace Organico.FunctionApp
         }
 
         [Function("Carrinho")]
-        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
             var response = req.CreateResponse(HttpStatusCode.OK);
-            
+
             // 1. Comentar a resposta padrão
             //response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
             //response.WriteString("Welcome to Azure Functions!");
-            
+
             // 2. Acessar o objeto cliente de acesso a dados do Carrinho de Compras
-            
             var cosmosClient = CarrinhoCosmosClient.Instance();
 
             // 3. Identificar quando a requisição é GET ou POST 
-
             if (req.Method == "GET")
             {
                 // 4. Adicionar o cabeçalho para a resposta JSON
@@ -49,7 +47,7 @@ namespace Organico.FunctionApp
             {
                 // 6. inserir/modificar/remover item do carrinho
                 var content = await new StreamReader(req.Body).ReadToEndAsync();
-                CartItem cartItem = JsonConvert.DeserializeObject<CartItem>(content);
+                var cartItem = JsonConvert.DeserializeObject<CartItem>(content);
 
                 await cosmosClient.Post(cartItem);
             }

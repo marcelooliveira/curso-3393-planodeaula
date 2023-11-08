@@ -23,23 +23,16 @@ namespace Organico.FunctionApp
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
             var response = req.CreateResponse(HttpStatusCode.OK);
-            
-            // 1. Comentar a resposta padrão
             //response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
             //response.WriteString("Welcome to Azure Functions!");
-            
-            // 2. Acessar o objeto cliente de acesso a dados do Carrinho de Compras
-            
-            var cosmosClient = CarrinhoCosmosClient.Instance();
 
-            // 3. Identificar quando a requisição é GET ou POST 
+            response.Headers.Add("Content-Type", "application/json; charset=utf-8");
+
+            var cosmosClient = CarrinhoCosmosClient.Instance();
 
             if (req.Method == "GET")
             {
-                // 2. Adicionar o cabeçalho para a resposta JSON
-                response.Headers.Add("Content-Type", "application/json; charset=utf-8");
-
                 //ler carrinho
                 var cart = await cosmosClient.Get();
                 response.WriteString(JsonConvert.SerializeObject(cart.Items));

@@ -31,28 +31,28 @@ namespace Organico.Library.Data
         /// <summary>
         /// Mover pedido de de "aguardando pagamento" para "pronto para entrega"
         /// </summary>
-        Task ApprovePaymentAsync();
+        void ApprovePayment();
 
         /// <summary>
         /// Pedidos aguardando pagamento
         /// </summary>
-        Task<List<Order>> GetOrdersAwaitingPayment();
+        List<Order> GetOrdersAwaitingPayment();
 
         /// <summary>
         /// Pedidos prontos para entrega
         /// </summary>
         /// <returns>Uma fila com os pedidos</returns>
-        Task<List<Order>> GetOrdersForDeliveryAsync();
+        List<Order> GetOrdersForDelivery();
 
         /// <summary>
         /// Pedidos com pagamento rejeitado
         /// </summary>
         /// <returns>Uma fila com os pedidos</returns>
-        Task<List<Order>> GetOrdersRejectedAsync();
+        List<Order> GetOrdersRejected();
 
         /// <summary>
         /// Mover pedido de de "aguardando pagamento" para "pagamento rejeitado"
         /// </summary>
-        Task RejectPaymentAsync();
+        void RejectPayment();
     }
 }
