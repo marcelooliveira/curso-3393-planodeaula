@@ -12,8 +12,6 @@ namespace Organico.Library.Data
 
         private IConfiguration _configuration;
 
-        // 1. Novo objeto cliente para acesso cliente de requisições HTTP
-
         private static ECommerceData? instance;
         public static ECommerceData Instance
         {
@@ -53,16 +51,10 @@ namespace Organico.Library.Data
 
         public List<CartItem> GetCartItems()
         {
-            // 1. Comentar o fluxo atual de listagem de itens
             var items = _cartItems.Values.ToList();
             items.Sort((item1, item2) => item1.ProductId.CompareTo(item2.ProductId));
             return items;
 
-            // 2. Obter a URI da Azure Function do carrinho
-
-            // 3. Realizar a requisição para a Azure Function do carrinho
-
-            // 4. Tratar o resultado JSON do carrinho
         }
         
         // Adiciona um item ao carrinho de compras
@@ -71,18 +63,11 @@ namespace Organico.Library.Data
             var products = GetProductList();
             var product = products.FirstOrDefault(p => p.Id == cartItem.ProductId);
 
-            // 1. Comentar o fluxo atual
             if (product != null)
             {
                 var newCartItem = new CartItem(cartItem.Id, product.Id, product.Icon, product.Description, product.UnitPrice, cartItem.Quantity);
                 _cartItems[newCartItem.ProductId] = newCartItem;
             }
-
-            // 2. Obter a URI da Azure Function do carrinho
-
-            // 3. Serializar o item do carrinho
-
-            // 4. Invocar o HTTP Post para adicionar/modificar/remover item do carrinho
         }
 
         // Cria um novo pedido e limpa o carrinho de compras
@@ -96,7 +81,6 @@ namespace Organico.Library.Data
 
             SaveOrder(order);
 
-            // 5. Limpar o carrinho
             foreach (var item in _cartItems)
             {
                 var cartItem = item.Value;
@@ -159,22 +143,14 @@ namespace Organico.Library.Data
         // Obtém os pedidos
         private List<Order> GetOrders()
         {
-            // 1. Comentar fluxo atual
             var orders = _orders.ToList();
             orders.Sort((order1, order2) => order2.Id.CompareTo(order1.Id));
             return orders;
-
-            // 2. Obter a URI da Azure Function dos pedidos
-
-            // 3. Realizar a requisição para a Azure Function dos pedidos
-
-            // 4. Tratar o resultado JSON dos pedidos
         }
 
         // Grava o pedido
         private void SaveOrder(Order order)
         {
-            // 1. Comentar fluxo atual
             var existingOrder = _orders.Where(o => o.Id == order.Id).SingleOrDefault();
             if (existingOrder != null)
             {
@@ -182,10 +158,6 @@ namespace Organico.Library.Data
             }
 
             _orders.Add(order);
-
-            // 2. Obter a URI da Azure Function do pedido
-
-            // 3. Serializar o pedido
         }
     }
 }

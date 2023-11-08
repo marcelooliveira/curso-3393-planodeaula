@@ -112,7 +112,6 @@ namespace Organico.Library.Data
 
             SaveOrder(order);
 
-            // 5. Limpar o carrinho
             foreach (var item in _cartItems)
             {
                 var cartItem = item.Value;
