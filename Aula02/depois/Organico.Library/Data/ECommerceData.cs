@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Organico.Library.Model;
+using System.Net.Http;
 using System.Text;
 
 namespace Organico.Library.Data
@@ -11,6 +12,7 @@ namespace Organico.Library.Data
         private Dictionary<string, CartItem> _cartItems;
 
         private IConfiguration _configuration;
+        private static HttpClient _httpClient = new();
 
         private static ECommerceData? instance;
         public static ECommerceData Instance
@@ -51,12 +53,18 @@ namespace Organico.Library.Data
 
         public List<CartItem> GetCartItems()
         {
+            // 1. Comentar o fluxo atual de listagem de itens
             var items = _cartItems.Values.ToList();
             items.Sort((item1, item2) => item1.ProductId.CompareTo(item2.ProductId));
             return items;
 
+            // 2. Obter a URI da Azure Function do carrinho
+
+            // 3. Realizar a requisição para a Azure Function do carrinho
+
+            // 4. Tratar o resultado JSON do carrinho
         }
-        
+
         // Adiciona um item ao carrinho de compras
         public void AddCartItem(CartItem cartItem)
         {
