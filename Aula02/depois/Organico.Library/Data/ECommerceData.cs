@@ -81,11 +81,18 @@ namespace Organico.Library.Data
             var products = GetProductList();
             var product = products.FirstOrDefault(p => p.Id == cartItem.ProductId);
 
+            // 1. Comentar o fluxo atual
             if (product != null)
             {
                 var newCartItem = new CartItem(cartItem.Id, product.Id, product.Icon, product.Description, product.UnitPrice, cartItem.Quantity);
                 _cartItems[newCartItem.ProductId] = newCartItem;
             }
+
+            // 2. Obter a URI da Azure Function do carrinho
+
+            // 3. Serializar o item do carrinho
+
+            // 4. Invocar o HTTP Post para adicionar/modificar/remover item do carrinho
         }
 
         // Cria um novo pedido e limpa o carrinho de compras
