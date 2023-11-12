@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Organico.Library.Data
 {
-    public class ECommerceData : BaseECommerceData, IECommerceData
+    public class ECommerceData : BaseECommerceData
     {
         private List<Order> _orders = new List<Order>();
         private Dictionary<string, CartItem> _cartItems;
@@ -53,16 +53,23 @@ namespace Organico.Library.Data
 
         public List<CartItem> GetCartItems()
         {
-            // 1. Comentar o fluxo atual de listagem de itens
+            // 1. Comentar o fluxo atual de itens em memória
             var items = _cartItems.Values.ToList();
-            items.Sort((item1, item2) => item1.ProductId.CompareTo(item2.ProductId));
-            return items;
 
             // 2. Obter a URI da Azure Function do carrinho
 
             // 3. Realizar a requisição para a Azure Function do carrinho
 
             // 4. Tratar o resultado JSON do carrinho
+
+
+
+            _cartItems.Clear();
+            foreach (var item in items)
+            {
+                _cartItems[item.ProductId] = item;
+            }
+            return items;
         }
 
         // Adiciona um item ao carrinho de compras
