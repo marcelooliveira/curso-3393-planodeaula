@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Organico.Library.Model;
+using System.Configuration;
 using System.Net.Http;
 using System.Text;
 
@@ -51,18 +52,20 @@ namespace Organico.Library.Data
             _configuration = configuration;
         }
 
-        public List<CartItem> GetCartItems()
+        public async Task<List<CartItem>> GetCartItems()
         {
             // 1. Comentar o fluxo atual de itens em memória
-            var items = _cartItems.Values.ToList();
+            //var items = _cartItems.Values.ToList();
 
             // 2. Obter a URI da Azure Function do carrinho
+            var carrinhoUrl = new Uri(_configuration["CarrinhoUrl"]);
 
             // 3. Realizar a requisição para a Azure Function do carrinho
+            var response = await _httpClient.GetAsync(carrinhoUrl);
 
             // 4. Tratar o resultado JSON do carrinho
-
-
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var items = JsonConvert.DeserializeObject<List<CartItem>>(jsonResponse);
 
             _cartItems.Clear();
             foreach (var item in items)
