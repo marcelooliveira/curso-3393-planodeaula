@@ -52,7 +52,7 @@ public class AddToCartModel : PageModel
             quantity
         );
 
-        ECommerceData.Instance.AddCartItem(cartItem);
+        await ECommerceData.Instance.AddCartItem(cartItem);
         return Redirect("/cart");
     }
 }

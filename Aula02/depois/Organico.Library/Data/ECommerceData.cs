@@ -76,23 +76,27 @@ namespace Organico.Library.Data
         }
 
         // Adiciona um item ao carrinho de compras
-        public void AddCartItem(CartItem cartItem)
+        public async Task AddCartItem(CartItem cartItem)
         {
             var products = GetProductList();
             var product = products.FirstOrDefault(p => p.Id == cartItem.ProductId);
 
             // 1. Comentar o fluxo atual
-            if (product != null)
-            {
-                var newCartItem = new CartItem(cartItem.Id, product.Id, product.Icon, product.Description, product.UnitPrice, cartItem.Quantity);
-                _cartItems[newCartItem.ProductId] = newCartItem;
-            }
+            //if (product != null)
+            //{
+            //    var newCartItem = new CartItem(cartItem.Id, product.Id, product.Icon, product.Description, product.UnitPrice, cartItem.Quantity);
+            //    _cartItems[newCartItem.ProductId] = newCartItem;
+            //}
 
             // 2. Obter a URI da Azure Function do carrinho
+            var carrinhoUrl = new Uri(_configuration["CarrinhoUrl"]);
 
             // 3. Serializar o item do carrinho
+            var jsonItems = JsonConvert.SerializeObject(cartItem);
+            var stringContent = new StringContent(jsonItems, Encoding.UTF8, "application/json");
 
             // 4. Invocar o HTTP Post para adicionar/modificar/remover item do carrinho
+            await _httpClient.PostAsync(carrinhoUrl, stringContent);
         }
 
         // Cria um novo pedido e limpa o carrinho de compras
