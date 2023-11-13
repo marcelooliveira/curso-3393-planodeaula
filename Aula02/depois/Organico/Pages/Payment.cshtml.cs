@@ -16,24 +16,24 @@ public class PaymentModel : PageModel
 
     public List<Order> OrdersAwaitingPayment { get; private set; }
 
-    public void OnGet()
+    public async Task OnGetAsync()
     {
-        OrdersAwaitingPayment = ECommerceData.Instance.GetOrdersAwaitingPayment();
+        OrdersAwaitingPayment = await ECommerceData.Instance.GetOrdersAwaitingPaymentAsync();
     }
 
-    public IActionResult OnPost()
+    public async Task<IActionResult> OnPostAsync()
     {
         if (Request.Form.Keys.Contains("approveSubmit"))
         {
-            ECommerceData.Instance.ApprovePayment();
+            await ECommerceData.Instance.ApprovePaymentAsync();
         }
 
         if (Request.Form.Keys.Contains("rejectSubmit"))
         {
-            ECommerceData.Instance.RejectPayment();
+            await ECommerceData.Instance.RejectPaymentAsync();
         }
 
-        OrdersAwaitingPayment = ECommerceData.Instance.GetOrdersAwaitingPayment();
+        OrdersAwaitingPayment = await ECommerceData.Instance.GetOrdersAwaitingPaymentAsync();
         return Page();
     }
 }

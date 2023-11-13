@@ -26,7 +26,7 @@ public class CartModel : PageModel
         CartItems = await ECommerceData.Instance.GetCartItems();
     }
 
-    public IActionResult OnPost()
+    public async Task<IActionResult> OnPostAsync()
     {
         if (Request.Form.Keys.Contains("addToCartSubmit"))
         {
@@ -35,7 +35,7 @@ public class CartModel : PageModel
 
         if (Request.Form.Keys.Contains("checkoutSubmit"))
         {
-            ECommerceData.Instance.CheckOut();
+            await ECommerceData.Instance.CheckOutAsync();
         }
 
         return Redirect("/cart");

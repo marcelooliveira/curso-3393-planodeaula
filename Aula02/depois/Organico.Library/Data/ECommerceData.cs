@@ -100,78 +100,78 @@ namespace Organico.Library.Data
         }
 
         // Cria um novo pedido e limpa o carrinho de compras
-        public void CheckOut()
+        public async Task CheckOutAsync()
         {
-            _orders = GetOrders();
+            _orders = await GetOrdersAsync();
             var orderId = _orders.Any() ? _orders.Max(o => int.Parse(o.Id) + 1) : 0;
             int itemCount = _cartItems.Count;
             var total = _cartItems.Values.Sum(item => item.Quantity * item.UnitPrice);
             var order = new Order(orderId.ToString(), DateTime.Now, itemCount, total);
 
-            SaveOrder(order);
+            await SaveOrderAsync(order);
 
             foreach (var item in _cartItems)
             {
                 var cartItem = item.Value;
                 cartItem.Quantity = 0;
-                AddCartItem(cartItem);
+                await AddCartItem(cartItem);
             }
 
             _cartItems.Clear();
         }
 
         // Obtém pedidos aguardando pagamento
-        public List<Order> GetOrdersAwaitingPayment()
+        public async Task<List<Order>> GetOrdersAwaitingPaymentAsync()
         {
-            return GetFilteredOrders(OrderStatus.AwaitingPayment);
+            return await GetFilteredOrdersAsync(OrderStatus.AwaitingPayment);
         }
 
 
         // Obtém pedidos prontos para entrega
-        public List<Order> GetOrdersForDelivery()
+        public async Task<List<Order>> GetOrdersForDeliveryAsync()
         {
-            return GetFilteredOrders(OrderStatus.ForDelivery);
+            return await GetFilteredOrdersAsync(OrderStatus.ForDelivery);
         }
 
         // Obtém pedidos com pagamento recusado
-        public List<Order> GetOrdersRejected()
+        public async Task<List<Order>> GetOrdersRejectedAsync()
         {
-            return GetFilteredOrders(OrderStatus.Rejected);
+            return await GetFilteredOrdersAsync(OrderStatus.Rejected);
         }
 
         // Move pedido aguardando pagamento para pronto para entrega
-        public void ApprovePayment()
+        public async Task ApprovePaymentAsync()
         {
-            var orders = GetFilteredOrders(OrderStatus.AwaitingPayment);
+            var orders = await GetFilteredOrdersAsync(OrderStatus.AwaitingPayment);
             if (orders.Any())
             {
                 var order = orders.OrderBy(o => int.Parse(o.Id)).First();
                 order.Status = (int)OrderStatus.ForDelivery;
-                SaveOrder(order);
+                await SaveOrderAsync(order);
             }
         }
 
         // Move pedido aguardando pagamento para pagamento recusado
-        public void RejectPayment()
+        public async Task RejectPaymentAsync()
         {
-            var orders = GetFilteredOrders(OrderStatus.AwaitingPayment);
+            var orders = await GetFilteredOrdersAsync(OrderStatus.AwaitingPayment);
             if (orders.Any())
             {
                 var order = orders.OrderBy(o => int.Parse(o.Id)).Last();
                 order.Status = (int)OrderStatus.Rejected;
-                SaveOrder(order);
+                await SaveOrderAsync(order);
             }
         }
 
         // Obtém pedidos filtrados por status
-        private List<Order> GetFilteredOrders(OrderStatus filterStatus)
+        private async Task<List<Order>> GetFilteredOrdersAsync(OrderStatus filterStatus)
         {
-            _orders = GetOrders();
+            _orders = await GetOrdersAsync();
             return _orders.Where(o => o.Status == (byte)filterStatus).ToList();
         }
 
         // Obtém os pedidos
-        private List<Order> GetOrders()
+        private async Task<List<Order>> GetOrdersAsync()
         {
             // 1. Comentar fluxo atual
             var orders = _orders.ToList();
@@ -186,7 +186,7 @@ namespace Organico.Library.Data
         }
 
         // Grava o pedido
-        private void SaveOrder(Order order)
+        private async Task SaveOrderAsync(Order order)
         {
             // 1. Comentar fluxo atual
             var existingOrder = _orders.Where(o => o.Id == order.Id).SingleOrDefault();
