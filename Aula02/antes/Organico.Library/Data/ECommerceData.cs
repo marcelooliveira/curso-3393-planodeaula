@@ -1,18 +1,19 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Organico.Library.Model;
+using System.Configuration;
+using System.Net.Http;
 using System.Text;
 
 namespace Organico.Library.Data
 {
-    public class ECommerceData : BaseECommerceData, IECommerceData
+    public class ECommerceData : BaseECommerceData
     {
         private List<Order> _orders = new List<Order>();
         private Dictionary<string, CartItem> _cartItems;
 
         private IConfiguration _configuration;
-
-        // 1. Novo objeto cliente para acesso cliente de requisições HTTP
+        private static HttpClient _httpClient = new();
 
         private static ECommerceData? instance;
         public static ECommerceData Instance
@@ -53,16 +54,21 @@ namespace Organico.Library.Data
 
         public List<CartItem> GetCartItems()
         {
-            // 1. Comentar o fluxo atual de listagem de itens
+            // 1. Comentar o fluxo atual de itens em memória
             var items = _cartItems.Values.ToList();
-            items.Sort((item1, item2) => item1.ProductId.CompareTo(item2.ProductId));
-            return items;
 
             // 2. Obter a URI da Azure Function do carrinho
 
             // 3. Realizar a requisição para a Azure Function do carrinho
 
             // 4. Tratar o resultado JSON do carrinho
+
+            _cartItems.Clear();
+            foreach (var item in items)
+            {
+                _cartItems[item.ProductId] = item;
+            }
+            return items;
         }
         
         // Adiciona um item ao carrinho de compras
@@ -96,7 +102,7 @@ namespace Organico.Library.Data
 
             SaveOrder(order);
 
-            // 5. Limpar o carrinho
+            // 5. Recriar o carrinho
             foreach (var item in _cartItems)
             {
                 var cartItem = item.Value;

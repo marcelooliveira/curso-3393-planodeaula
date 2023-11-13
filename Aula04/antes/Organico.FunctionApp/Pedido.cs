@@ -34,8 +34,8 @@ namespace Organico.FunctionApp
             if (req.Method == "GET")
             {
                 //ler pedidos
-                var pedidos = await cosmosClient.GetList();
-                response.WriteString(JsonConvert.SerializeObject(pedidos));
+                var orders = await cosmosClient.GetList();
+                response.WriteString(JsonConvert.SerializeObject(orders));
             }
 
             if (req.Method == "POST")

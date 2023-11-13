@@ -126,13 +126,14 @@ namespace Organico.Library.Data
             return GetFilteredOrders(OrderStatus.AwaitingPayment);
         }
 
+
         // Obtém pedidos prontos para entrega
         public List<Order> GetOrdersForDelivery()
         {
             return GetFilteredOrders(OrderStatus.ForDelivery);
         }
 
-        // Obtém pedidos prontos para entrega
+        // Obtém pedidos com pagamento recusado
         public List<Order> GetOrdersRejected()
         {
             return GetFilteredOrders(OrderStatus.Rejected);
@@ -156,7 +157,7 @@ namespace Organico.Library.Data
             var orders = GetFilteredOrders(OrderStatus.AwaitingPayment);
             if (orders.Any())
             {
-                var order = orders.OrderBy(o => int.Parse(o.Id)).First();
+                var order = orders.OrderBy(o => int.Parse(o.Id)).Last();
                 order.Status = (int)OrderStatus.Rejected;
                 SaveOrder(order);
             }
@@ -172,14 +173,22 @@ namespace Organico.Library.Data
         // Obtém os pedidos
         private List<Order> GetOrders()
         {
+            // 1. Comentar fluxo atual
             var orders = _orders.ToList();
             orders.Sort((order1, order2) => order2.Id.CompareTo(order1.Id));
             return orders;
+
+            // 2. Obter a URI da Azure Function dos pedidos
+
+            // 3. Realizar a requisição para a Azure Function dos pedidos
+
+            // 4. Tratar o resultado JSON dos pedidos
         }
 
         // Grava o pedido
         private void SaveOrder(Order order)
         {
+            // 1. Comentar fluxo atual
             var existingOrder = _orders.Where(o => o.Id == order.Id).SingleOrDefault();
             if (existingOrder != null)
             {
@@ -187,6 +196,10 @@ namespace Organico.Library.Data
             }
 
             _orders.Add(order);
+
+            // 2. Obter a URI da Azure Function do pedido
+
+            // 3. Serializar o pedido
         }
     }
 }
