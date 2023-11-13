@@ -188,7 +188,7 @@ namespace Organico.Library.Data
         // Grava o pedido
         private async Task SaveOrderAsync(Order order)
         {
-            // 1. Comentar fluxo atual
+
             var existingOrder = _orders.Where(o => o.Id == order.Id).SingleOrDefault();
             if (existingOrder != null)
             {
@@ -197,9 +197,9 @@ namespace Organico.Library.Data
 
             _orders.Add(order);
 
-            // 2. Obter a URI da Azure Function do pedido
+            // 1. Obter a URI da Azure Function do pedido
 
-            // 3. Serializar o pedido
+            // 2. Serializar o pedido
         }
     }
 }

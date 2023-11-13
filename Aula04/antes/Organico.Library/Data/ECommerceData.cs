@@ -108,7 +108,7 @@ namespace Organico.Library.Data
             var total = _cartItems.Values.Sum(item => item.Quantity * item.UnitPrice);
             var order = new Order(orderId.ToString(), DateTime.Now, itemCount, total);
 
-            await SaveOrder(order);
+            await SaveOrderAsync(order);
 
             foreach (var item in _cartItems)
             {
@@ -121,50 +121,50 @@ namespace Organico.Library.Data
         }
 
         // Obtém pedidos aguardando pagamento
-        public async Task<List<Order>> GetOrdersAwaitingPayment()
+        public async Task<List<Order>> GetOrdersAwaitingPaymentAsync()
         {
-            return await GetFilteredOrders(OrderStatus.AwaitingPayment);
+            return await GetFilteredOrdersAsync(OrderStatus.AwaitingPayment);
         }
 
 
         // Obtém pedidos prontos para entrega
         public async Task<List<Order>> GetOrdersForDeliveryAsync()
         {
-            return await GetFilteredOrders(OrderStatus.ForDelivery);
+            return await GetFilteredOrdersAsync(OrderStatus.ForDelivery);
         }
 
         // Obtém pedidos com pagamento recusado
         public async Task<List<Order>> GetOrdersRejectedAsync()
         {
-            return await GetFilteredOrders(OrderStatus.Rejected);
+            return await GetFilteredOrdersAsync(OrderStatus.Rejected);
         }
 
         // Move pedido aguardando pagamento para pronto para entrega
         public async Task ApprovePaymentAsync()
         {
-            var orders = await GetFilteredOrders(OrderStatus.AwaitingPayment);
+            var orders = await GetFilteredOrdersAsync(OrderStatus.AwaitingPayment);
             if (orders.Any())
             {
-                var order = orders.OrderBy(o => int.Parse(o.Id)).Last();
+                var order = orders.OrderBy(o => int.Parse(o.Id)).First();
                 order.Status = (int)OrderStatus.ForDelivery;
-                await SaveOrder(order);
+                await SaveOrderAsync(order);
             }
         }
 
         // Move pedido aguardando pagamento para pagamento recusado
         public async Task RejectPaymentAsync()
         {
-            var orders = await GetFilteredOrders(OrderStatus.AwaitingPayment);
+            var orders = await GetFilteredOrdersAsync(OrderStatus.AwaitingPayment);
             if (orders.Any())
             {
                 var order = orders.OrderBy(o => int.Parse(o.Id)).Last();
                 order.Status = (int)OrderStatus.Rejected;
-                await SaveOrder(order);
+                await SaveOrderAsync(order);
             }
         }
 
         // Obtém pedidos filtrados por status
-        private async Task<List<Order>> GetFilteredOrders(OrderStatus filterStatus)
+        private async Task<List<Order>> GetFilteredOrdersAsync(OrderStatus filterStatus)
         {
             _orders = await GetOrdersAsync();
             return _orders.Where(o => o.Status == (byte)filterStatus).ToList();
@@ -190,7 +190,7 @@ namespace Organico.Library.Data
         }
 
         // Grava o pedido
-        private async Task SaveOrder(Order order)
+        private async Task SaveOrderAsync(Order order)
         {
             var existingOrder = _orders.Where(o => o.Id == order.Id).SingleOrDefault();
             if (existingOrder != null)
