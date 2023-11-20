@@ -6,6 +6,5 @@
     }
   },
   "AllowedHosts": "*",
-  "CarrinhoUrl": "https://organicofunctionapp20231105185100.azurewebsites.net/api/Carrinho?",
-  "PedidosUrl": ""
+  "CarrinhoUrl": "https://organicofunctionapp20231105185100.azurewebsites.net/api/Carrinho?"
 }
