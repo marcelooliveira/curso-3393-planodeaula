@@ -39,11 +39,11 @@ namespace Organico.Library.Data
                 //new Order("1006", new DateTime(2021, 10, 11, 3, 3, 0), 7, 70.00m),
                 //new Order("1007", new DateTime(2021, 10, 12, 17, 17, 0), 2, 20.00m),
                 //new Order("1008", new DateTime(2021, 10, 13, 21, 9, 0), 5, 50.00m),
-                new Order("1002", new DateTime(2021, 10, 2, 23, 3, 0), 5, 50.00m, (byte)OrderStatus.ForDelivery),
-                new Order("1003", new DateTime(2021, 10, 9, 7, 7, 0), 3, 30.00m, (byte)OrderStatus.ForDelivery),
-                new Order("1001", new DateTime(2021, 10, 1, 18, 32, 0), 5, 35.00m, (byte)OrderStatus.Rejected),
-                new Order("1004", new DateTime(2021, 10, 3, 17, 17, 0), 2, 24.00m, (byte)OrderStatus.Rejected),
-                new Order("1005", new DateTime(2021, 10, 7, 9, 12, 0), 4, 17.00m, (byte)OrderStatus.Rejected)
+                //new Order("1002", new DateTime(2021, 10, 2, 23, 3, 0), 5, 50.00m, (byte)OrderStatus.ForDelivery),
+                //new Order("1003", new DateTime(2021, 10, 9, 7, 7, 0), 3, 30.00m, (byte)OrderStatus.ForDelivery),
+                //new Order("1001", new DateTime(2021, 10, 1, 18, 32, 0), 5, 35.00m, (byte)OrderStatus.Rejected),
+                //new Order("1004", new DateTime(2021, 10, 3, 17, 17, 0), 2, 24.00m, (byte)OrderStatus.Rejected),
+                //new Order("1005", new DateTime(2021, 10, 7, 9, 12, 0), 4, 17.00m, (byte)OrderStatus.Rejected)
             };
         }
 
@@ -179,7 +179,7 @@ namespace Organico.Library.Data
             //return orders;
 
             // 2. Obter a URI da Azure Function dos pedidos
-            Uri pedidosUri = new Uri(_configuration["PedidosUrl"]);
+            var pedidosUri = new Uri(_configuration["PedidosUrl"]);
 
             // 3. Realizar a requisição para a Azure Function dos pedidos
             var response = await _httpClient.GetAsync(pedidosUri);
