@@ -3,8 +3,8 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Organico.Library;
 using Organico.Library.Model;
+using Organico.Library;
 
 namespace Organico.FunctionApp
 {
@@ -29,20 +29,23 @@ namespace Organico.FunctionApp
 
             response.Headers.Add("Content-Type", "application/json; charset=utf-8");
 
+
             var cosmosClient = PedidosCosmosClient.Instance();
 
             if (req.Method == "GET")
             {
                 //ler pedidos
-                var pedidos = await cosmosClient.GetList();
-                response.WriteString(JsonConvert.SerializeObject(pedidos));
+                var orders = await cosmosClient.GetList();
+                orders = orders.OrderByDescending(o => o.Id).ToList();
+                response.WriteString(JsonConvert.SerializeObject(orders));
             }
 
             if (req.Method == "POST")
             {
                 //gravar pedido
-                var content = await new StreamReader(req.Body).ReadToEndAsync();
-                Order order = JsonConvert.DeserializeObject<Order>(content);
+                var body = req.Body;
+                var content = await new StreamReader(body).ReadToEndAsync();
+                var order = JsonConvert.DeserializeObject<Order>(content);
 
                 await cosmosClient.Post(order);
             }

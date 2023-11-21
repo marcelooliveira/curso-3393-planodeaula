@@ -2,6 +2,9 @@
 
 namespace Organico.Library.Model
 {
+    /// <summary>
+    /// Representa um carrinho de compras
+    /// </summary>
     public class Cart : BaseEntity
     {
         [JsonProperty("items")]

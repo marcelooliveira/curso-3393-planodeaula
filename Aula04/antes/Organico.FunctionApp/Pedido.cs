@@ -32,41 +32,25 @@ namespace Organico.FunctionApp
 
             var cosmosClient = PedidosCosmosClient.Instance();
 
-
             if (req.Method == "GET")
-
             {
-
                 //ler pedidos
-
                 var orders = await cosmosClient.GetList();
-
                 orders = orders.OrderByDescending(o => o.Id).ToList();
-
                 response.WriteString(JsonConvert.SerializeObject(orders));
-
             }
 
-
             if (req.Method == "POST")
-
             {
-
                 //gravar pedido
-
                 var body = req.Body;
-
                 var content = await new StreamReader(body).ReadToEndAsync();
-
                 var order = JsonConvert.DeserializeObject<Order>(content);
 
-
                 await cosmosClient.Post(order);
-
             }
 
             return response;
         }
     }
 }
-

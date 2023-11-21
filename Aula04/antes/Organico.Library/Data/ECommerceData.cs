@@ -157,7 +157,7 @@ namespace Organico.Library.Data
             var orders = await GetFilteredOrdersAsync(OrderStatus.AwaitingPayment);
             if (orders.Any())
             {
-                var order = orders.OrderBy(o => int.Parse(o.Id)).Last();
+                var order = orders.OrderBy(o => int.Parse(o.Id)).First();
                 order.Status = (int)OrderStatus.Rejected;
                 await SaveOrderAsync(order);
             }

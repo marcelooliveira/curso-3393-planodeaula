@@ -18,7 +18,7 @@ public class PaymentModel : PageModel
 
     public async Task OnGetAsync()
     {
-        OrdersAwaitingPayment = await ECommerceData.Instance.GetOrdersAwaitingPayment();
+        OrdersAwaitingPayment = await ECommerceData.Instance.GetOrdersAwaitingPaymentAsync();
     }
 
     public async Task<IActionResult> OnPostAsync()
@@ -33,7 +33,7 @@ public class PaymentModel : PageModel
             await ECommerceData.Instance.RejectPaymentAsync();
         }
 
-        OrdersAwaitingPayment = await ECommerceData.Instance.GetOrdersAwaitingPayment();
+        OrdersAwaitingPayment = await ECommerceData.Instance.GetOrdersAwaitingPaymentAsync();
         return Page();
     }
 }

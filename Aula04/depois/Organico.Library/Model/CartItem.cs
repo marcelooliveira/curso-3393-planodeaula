@@ -2,7 +2,9 @@
 
 namespace Organico.Library.Model
 {
-    // Represents a group of a specific product in the cart
+    /// <summary>
+    /// Representa um item do carrinho de compras
+    /// </summary>
     public class CartItem : BaseEntity
     {
         [JsonProperty("productId")]
