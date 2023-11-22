@@ -203,8 +203,13 @@ namespace Organico.Library.Data
             _orders.Add(order);
 
             // 1. Obter a URI da Azure Function do pedido
+            var pedidoUri = new Uri(_configuration["PedidosUrl"]);
 
             // 2. Serializar o pedido
+            var jsonOrder = JsonConvert.SerializeObject(order);
+            var stringContent = new StringContent(jsonOrder, Encoding.UTF8,
+                "application/json");
+            await _httpClient.PostAsync(pedidoUri, stringContent);
         }
     }
 }
