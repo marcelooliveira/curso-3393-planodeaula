@@ -186,12 +186,14 @@ namespace Organico.Library.Data
 
             // 4. Tratar o resultado JSON dos pedidos
             var jsonResponse = await response.Content.ReadAsStringAsync();
+
             return JsonConvert.DeserializeObject<List<Order>>(jsonResponse);
         }
 
         // Grava o pedido
         private async Task SaveOrderAsync(Order order)
         {
+
             var existingOrder = _orders.Where(o => o.Id == order.Id).SingleOrDefault();
             if (existingOrder != null)
             {
@@ -201,12 +203,13 @@ namespace Organico.Library.Data
             _orders.Add(order);
 
             // 1. Obter a URI da Azure Function do pedido
-            var pedidosUri = new Uri(_configuration["PedidosUrl"]);
+            var pedidoUri = new Uri(_configuration["PedidosUrl"]);
 
             // 2. Serializar o pedido
             var jsonOrder = JsonConvert.SerializeObject(order);
-            var stringContent = new StringContent(jsonOrder, Encoding.UTF8, "application/json");
-            await _httpClient.PostAsync(pedidosUri, stringContent);
+            var stringContent = new StringContent(jsonOrder, Encoding.UTF8,
+                "application/json");
+            await _httpClient.PostAsync(pedidoUri, stringContent);
         }
     }
 }
