@@ -1,22 +1,23 @@
 const { app } = require('@azure/functions');
-const PedidoCosmosClient = require('../../pedidosCosmosClient');
+const PedidosCosmosClient = require('../../pedidosCosmosClient');
 
 app.storageQueue('rejeitaPedidoTrigger', {
     queueName: 'fila-rejeita-pedido',
     connection: 'organicofunctionapp20231_STORAGE',
     handler: async (queueItem, context) => {
-        const pedidosCosmosClient = new PedidoCosmosClient();
+        const pedidosCosmosClient = new PedidosCosmosClient();
+
         await pedidosCosmosClient.initializeAsync();
         const pedido = await pedidosCosmosClient.get(queueItem);
 
         if (!pedido) {
-            context.error('Pedido não encontrado: ', queueItem)
-            return
+            context.error('Pedido não encontado!', queueItem);
+            return;
         }
 
         pedido.status = 3; //PEDIDO REJEITADO
         await pedidosCosmosClient.post(pedido);
 
-        context.log('Pedido rejeitado com sucesso:', queueItem);
+        context.log('Pedido rejeitado com sucesso!', queueItem);
     }
 });
