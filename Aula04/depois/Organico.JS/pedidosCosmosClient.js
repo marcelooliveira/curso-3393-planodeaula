@@ -14,7 +14,6 @@ class PedidosCosmosClient {
     this._container = await this._client.database(this._databaseId).container('Pedidos');
   }
 
-  // LÊ UM PEDIDO DO BANCO DE DADOS COSMOSDB
   async get(id) {
     const result = [];
 
@@ -29,7 +28,6 @@ class PedidosCosmosClient {
     return pedidos[0]
   }
 
-  // GRAVA UM PEDIDO NO BANCO DE DADOS COSMOSDB
   async post(order) {
     const itemResponse = await this._container.items.upsert(order);
   }
