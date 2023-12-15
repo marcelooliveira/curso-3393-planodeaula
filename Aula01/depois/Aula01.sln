@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organico", "Organico\Organi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organico.Library", "Organico.Library\Organico.Library.csproj", "{511F61D0-0EB2-4B4E-9AD3-CEE96BA1220F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Organico.FunctionApp", "Organico.FunctionApp\Organico.FunctionApp.csproj", "{673BC15C-8F40-4F9A-8913-BB59CA6AA565}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Organico.FunctionApp", "Organico.FunctionApp\Organico.FunctionApp.csproj", "{673BC15C-8F40-4F9A-8913-BB59CA6AA565}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
